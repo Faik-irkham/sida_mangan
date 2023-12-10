@@ -11,34 +11,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late List<Restaurant> allRestaurants;
-  late List<Restaurant> displayedRestaurants;
-
-  @override
-  void initState() {
-    super.initState();
-    loadRestaurantData();
-  }
-
-  Future<void> loadRestaurantData() async {
-    final jsonString = await DefaultAssetBundle.of(context)
-        .loadString('assets/local_restaurant.json');
-    final restaurants = parseRestaurant(jsonString);
-    setState(() {
-      allRestaurants = restaurants;
-      displayedRestaurants = restaurants;
-    });
-  }
-
-  void _filterRestaurants(String query) {
-    setState(() {
-      displayedRestaurants = allRestaurants
-          .where((restaurant) =>
-              restaurant.name.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +23,7 @@ class _HomePageState extends State<HomePage> {
             height: 40,
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: TextField(
-              onChanged: _filterRestaurants,
+              onChanged: (value) {},
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(50),
@@ -68,24 +40,53 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Future<List<Restaurant>> _loadRestaurantData() async {
+    try {
+      final jsonString = await DefaultAssetBundle.of(context)
+          .loadString('assets/local_restaurant.json');
+      return parseRestaurant(jsonString);
+    } catch (e) {
+      return [];
+    }
+  }
+
   FutureBuilder<List<Restaurant>> _buildList(BuildContext context) {
     return FutureBuilder<List<Restaurant>>(
-      future: DefaultAssetBundle.of(context)
-          .loadString('assets/local_restaurant.json')
-          .then((jsonString) => parseRestaurant(jsonString)),
+      future: _loadRestaurantData(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator(); // Menampilkan loading indicator jika data masih diambil
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+          return Center(
+            child: Text(
+              'Error: ${snapshot.error}',
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Colors.red,
+              ),
+            ),
+          );
         } else {
           final List<Restaurant> restaurants = snapshot.data!;
-          return ListView.builder(
-            itemCount: restaurants.length,
-            itemBuilder: (context, index) {
-              return _builRestaurantItem(context, restaurants[index]);
-            },
-          );
+          if (restaurants.isEmpty) {
+            return const Center(
+              child: Text(
+                'Tidak ada data!',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: restaurants.length,
+              itemBuilder: (context, index) {
+                return _builRestaurantItem(context, restaurants[index]);
+              },
+            );
+          }
         }
       },
     );
@@ -106,17 +107,19 @@ class _HomePageState extends State<HomePage> {
           color: Colors.amber,
           child: Column(
             children: [
-              Container(
-                height: 200,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(restaurant.pictureId),
+              Hero(
+                tag: restaurant.id,
+                child: Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(restaurant.pictureId),
+                    ),
                   ),
                 ),
               ),
-              // Image.network(restaurant.pictureId),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [

@@ -23,7 +23,7 @@ final TextTheme myTextTheme = TextTheme(
   ),
   headlineSmall: GoogleFonts.nunito(
     fontSize: 23,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.bold,
   ),
   titleLarge: GoogleFonts.nunito(
     fontSize: 19,
@@ -42,12 +42,12 @@ final TextTheme myTextTheme = TextTheme(
   ),
   bodyLarge: GoogleFonts.nunito(
     fontSize: 16,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.bold,
     letterSpacing: 0.5,
   ),
   bodyMedium: GoogleFonts.nunito(
-    fontSize: 14,
-    fontWeight: FontWeight.w400,
+    fontSize: 12,
+    fontWeight: FontWeight.bold,
     letterSpacing: 0.25,
   ),
   labelLarge: GoogleFonts.nunito(

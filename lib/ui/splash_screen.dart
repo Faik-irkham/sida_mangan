@@ -31,7 +31,6 @@ class SplashScreen extends StatelessWidget {
                     topRight: Radius.circular(20),
                   ),
                 ),
-                // Adjust opacity as needed
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
