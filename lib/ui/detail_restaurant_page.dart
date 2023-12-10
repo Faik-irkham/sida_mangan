@@ -58,19 +58,19 @@ class DetailRestaurant extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    Text('Ratings'),
+                    const Text('Ratings'),
                     Text(restaurant.rating.toString()),
                   ],
                 ),
                 Column(
                   children: [
-                    Text('Tipe'),
+                    const Text('Tipe'),
                     Text(restaurant.rating.toString()),
                   ],
                 ),
                 Column(
                   children: [
-                    Text('Lokasi'),
+                    const Text('Lokasi'),
                     Text(restaurant.city),
                   ],
                 ),
