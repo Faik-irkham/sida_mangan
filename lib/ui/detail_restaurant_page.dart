@@ -21,7 +21,6 @@ class _DetailRestaurantState extends State<DetailRestaurant>
   Widget build(BuildContext context) {
     TabController tabController = TabController(length: 2, vsync: this);
     return Scaffold(
-      // extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -70,7 +69,6 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                     horizontal: 12,
                     vertical: 5,
                   ),
-                  // height: 30,
                   decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(30),
@@ -94,32 +92,35 @@ class _DetailRestaurantState extends State<DetailRestaurant>
             ),
           ),
           const SizedBox(height: 20),
-          TabBar(
-            controller: tabController,
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.black,
-            indicatorPadding: const EdgeInsets.symmetric(
-              vertical: 7,
-              horizontal: 14,
-            ),
-            indicator: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(50),
-            ),
-            tabs: [
-              Tab(
-                child: Text(
-                  'Foods',
-                  style: myTextTheme.bodyMedium,
-                ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: TabBar(
+              controller: tabController,
+              labelColor: Colors.white,
+              indicatorSize: TabBarIndicatorSize.tab,
+              indicatorPadding: const EdgeInsets.symmetric(
+                vertical: 7,
               ),
-              Tab(
-                child: Text(
-                  'Drinks',
-                  style: myTextTheme.bodyMedium,
-                ),
+              unselectedLabelColor: Colors.black,
+              indicator: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(50),
               ),
-            ],
+              tabs: [
+                Tab(
+                  child: Text(
+                    'Foods',
+                    style: myTextTheme.bodyMedium,
+                  ),
+                ),
+                Tab(
+                  child: Text(
+                    'Drinks',
+                    style: myTextTheme.bodyMedium,
+                  ),
+                ),
+              ],
+            ),
           ),
           SizedBox(
             height: 500,
