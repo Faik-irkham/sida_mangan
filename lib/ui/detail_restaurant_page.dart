@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sida_mangan/common/style.dart';
 import 'package:sida_mangan/data/model/restaurant.dart';
+import 'package:sida_mangan/widgets/text_deskripsi.dart';
 import 'package:sida_mangan/widgets/ratings_bar.dart';
 
 class DetailRestaurant extends StatelessWidget {
@@ -39,80 +40,65 @@ class DetailRestaurant extends StatelessWidget {
           ),
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            decoration: BoxDecoration(
-              color: Colors.amber.shade50,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  restaurant.name,
-                  style: myTextTheme.headlineSmall,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      restaurant.name,
+                      style: myTextTheme.bodyLarge,
+                    ),
+                    const SizedBox(height: 10),
+                    MyRatingBar(
+                      nilaiRating: restaurant.rating,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 10),
-                MyRatingBar(
-                  nilaiRating: restaurant.rating,
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
+                  // height: 30,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Text(
+                    restaurant.city,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
+          const SizedBox(height: 15),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: ReadMoreText(
+              text: restaurant.description,
+              maxLength: 120,
+            ),
+          ),
           const SizedBox(height: 20),
-          // DefaultTabController(
-          //   length: 3,
-          //   child: Column(
-          //     children: [
-          //       TabBar(
-          //         labelColor: Colors.black,
-          //         tabs: [
-          //           Tab(
-          //             child: Text(
-          //               'Info',
-          //               style: myTextTheme.bodyMedium,
-          //             ),
-          //           ),
-          //           Tab(
-          //             child: Text(
-          //               'Foods',
-          //               style: myTextTheme.bodyMedium,
-          //             ),
-          //           ),
-          //           Tab(
-          //             child: Text(
-          //               'Drinks',
-          //               style: myTextTheme.bodyMedium,
-          //             ),
-          //           ),
-          //         ],
-          //       ),
-          //       const Expanded(
-          //           child: TabBarView(
-          //         children: [
-          //           // Tab Restoran
-          //           RestaurantInfoTab(),
-
-          //           // Tab Makanan
-          //           FoodTab(),
-
-          //           // Tab Minuman
-          //           DrinkTab(),
-          //         ],
-          //       ))
-          //     ],
-          //   ),
-          // ),
           DefaultTabController(
-            length: 3,
+            length: 2,
             child: Column(
               children: [
                 TabBar(
-                  labelColor: Colors.black,
+                  labelColor: Colors.white,
+                  unselectedLabelColor: Colors.black,
+                  indicatorPadding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  indicator: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
                   tabs: [
-                    Tab(
-                      child: Text(
-                        'Info',
-                        style: myTextTheme.bodyMedium,
-                      ),
-                    ),
                     Tab(
                       child: Text(
                         'Foods',
@@ -127,24 +113,11 @@ class DetailRestaurant extends StatelessWidget {
                     ),
                   ],
                 ),
-                
               ],
             ),
           ),
-
         ],
       ),
-    );
-  }
-}
-
-class RestaurantInfoTab extends StatelessWidget {
-  const RestaurantInfoTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Informasi Restoran'),
     );
   }
 }
