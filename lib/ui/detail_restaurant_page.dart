@@ -170,7 +170,7 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 2 / 1.9,
+                    childAspectRatio: 2 / 2.1,
                     crossAxisSpacing: 12,
                     mainAxisSpacing: 12,
                   ),
