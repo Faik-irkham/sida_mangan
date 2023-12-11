@@ -174,7 +174,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 8),
                   MyRatingBar(nilaiRating: restaurant.rating),
-                  Text(restaurant.city),
+                  Text(
+                    restaurant.city,
+                    style: myTextTheme.bodySmall,
+                  ),
                 ],
               ),
             ],

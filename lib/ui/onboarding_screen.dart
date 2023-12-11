@@ -10,7 +10,6 @@ class OnBoardingScreen extends StatelessWidget {
       children: [
         Container(
           decoration: const BoxDecoration(
-            color: Colors.white,
             image: DecorationImage(
               image: AssetImage('assets/images/background1.jpg'),
               fit: BoxFit.cover,
