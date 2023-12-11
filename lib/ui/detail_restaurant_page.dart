@@ -4,14 +4,22 @@ import 'package:sida_mangan/data/model/restaurant.dart';
 import 'package:sida_mangan/widgets/text_deskripsi.dart';
 import 'package:sida_mangan/widgets/ratings_bar.dart';
 
-class DetailRestaurant extends StatelessWidget {
+class DetailRestaurant extends StatefulWidget {
   static const routeName = '/detail_restaurant';
 
   final Restaurant restaurant;
+
   const DetailRestaurant({super.key, required this.restaurant});
 
   @override
+  State<DetailRestaurant> createState() => _DetailRestaurantState();
+}
+
+class _DetailRestaurantState extends State<DetailRestaurant>
+    with TickerProviderStateMixin {
+  @override
   Widget build(BuildContext context) {
+    TabController tabController = TabController(length: 2, vsync: this);
     return Scaffold(
       // appBar: AppBar(
       //   backgroundColor: Colors.white,
@@ -24,7 +32,7 @@ class DetailRestaurant extends StatelessWidget {
         shrinkWrap: true,
         children: [
           Hero(
-            tag: restaurant.id,
+            tag: widget.restaurant.id,
             child: Container(
               padding: const EdgeInsets.only(left: 15, bottom: 15),
               height: 200,
@@ -32,7 +40,7 @@ class DetailRestaurant extends StatelessWidget {
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(
-                    restaurant.pictureId,
+                    widget.restaurant.pictureId,
                   ),
                 ),
               ),
@@ -47,18 +55,18 @@ class DetailRestaurant extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      restaurant.name,
+                      widget.restaurant.name,
                       style: myTextTheme.bodyLarge,
                     ),
                     const SizedBox(height: 10),
                     MyRatingBar(
-                      nilaiRating: restaurant.rating,
+                      nilaiRating: widget.restaurant.rating,
                     ),
                   ],
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
+                    horizontal: 12,
                     vertical: 5,
                   ),
                   // height: 30,
@@ -67,7 +75,7 @@ class DetailRestaurant extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Text(
-                    restaurant.city,
+                    widget.restaurant.city,
                     style: const TextStyle(
                       color: Colors.white,
                     ),
@@ -80,66 +88,144 @@ class DetailRestaurant extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: ReadMoreText(
-              text: restaurant.description,
+              text: widget.restaurant.description,
               maxLength: 120,
             ),
           ),
           const SizedBox(height: 20),
-          DefaultTabController(
-            length: 2,
-            child: Column(
+          TabBar(
+            controller: tabController,
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.black,
+            indicatorPadding: const EdgeInsets.symmetric(
+              vertical: 7,
+              horizontal: 14,
+            ),
+            indicator: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(50),
+            ),
+            tabs: [
+              Tab(
+                child: Text(
+                  'Foods',
+                  style: myTextTheme.bodyMedium,
+                ),
+              ),
+              Tab(
+                child: Text(
+                  'Drinks',
+                  style: myTextTheme.bodyMedium,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 500,
+            width: double.maxFinite,
+            child: TabBarView(
+              controller: tabController,
               children: [
-                TabBar(
-                  labelColor: Colors.white,
-                  unselectedLabelColor: Colors.black,
-                  indicatorPadding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  indicator: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(50),
+                // Foods GridView
+                GridView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
                   ),
-                  tabs: [
-                    Tab(
-                      child: Text(
-                        'Foods',
-                        style: myTextTheme.bodyMedium,
+                  itemCount: widget.restaurant.menus.foods.length,
+                  itemBuilder: (context, index) {
+                    Food food = widget.restaurant.menus.foods[index];
+                    return Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                            child: Image.asset(
+                              'assets/images/food.jpg',
+                              height: 85,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          ListTile(
+                            title: Text(food.name),
+                          )
+                        ],
                       ),
-                    ),
-                    Tab(
-                      child: Text(
-                        'Drinks',
-                        style: myTextTheme.bodyMedium,
+                    );
+                  },
+                ),
+                // Drinks GridView
+                GridView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 2 / 1.9,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                  ),
+                  itemCount: widget.restaurant.menus.drinks.length,
+                  itemBuilder: (context, index) {
+                    Drink drink = widget.restaurant.menus.drinks[index];
+                    return Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                            child: Image.asset(
+                              'assets/images/coffee.jpg',
+                              height: 85,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          ListTile(
+                            title: Text(drink.name),
+                          )
+                        ],
                       ),
-                    ),
-                  ],
+                    );
+                    // return Container(
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(14),
+                    //     color: Colors.white70,
+                    //     image: DecorationImage(
+                    //       fit: BoxFit.cover,
+                    //       image: AssetImage('assets/images/coffee.jpg'),
+                    //     ),
+                    //   ),
+                    //   child: Column(
+                    //     children: [
+                    //       // Image.asset('assets/images/coffee.jpg'),
+                    //       const SizedBox(height: 5),
+                    //       Container(
+                    //         color: Colors.amber,
+                    //         child: Text(drink.name),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // );
+                  },
                 ),
               ],
             ),
           ),
         ],
       ),
-    );
-  }
-}
-
-class FoodTab extends StatelessWidget {
-  const FoodTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Menu Makanan'),
-    );
-  }
-}
-
-class DrinkTab extends StatelessWidget {
-  const DrinkTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Menu Minuman'),
     );
   }
 }
