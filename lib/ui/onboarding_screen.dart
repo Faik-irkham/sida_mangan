@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class SplashScreen extends StatelessWidget {
-  static const routeName = '/splash_screen';
-  const SplashScreen({super.key});
+class OnBoardingScreen extends StatelessWidget {
+  static const routeName = '/onBoarding_screen';
+  const OnBoardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ class SplashScreen extends StatelessWidget {
                           'Get Started',
                           style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
