@@ -3,7 +3,7 @@ import 'package:sida_mangan/common/style.dart';
 import 'package:sida_mangan/data/model/restaurant.dart';
 import 'package:sida_mangan/ui/detail_restaurant_page.dart';
 import 'package:sida_mangan/ui/home_page.dart';
-import 'package:sida_mangan/ui/splash_screen.dart';
+import 'package:sida_mangan/ui/onboarding_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,14 +20,14 @@ class MyApp extends StatelessWidget {
         textTheme: myTextTheme,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.amber,
-            foregroundColor: Colors.white,
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
           ),
         ),
       ),
-      initialRoute: SplashScreen.routeName,
+      initialRoute: OnBoardingScreen.routeName,
       routes: {
-        SplashScreen.routeName: (context) => const SplashScreen(),
+        OnBoardingScreen.routeName: (context) => const OnBoardingScreen(),
         HomePage.routeName: (context) => const HomePage(),
         DetailRestaurant.routeName: (context) => DetailRestaurant(
               restaurant:

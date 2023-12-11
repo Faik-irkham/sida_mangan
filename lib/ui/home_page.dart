@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sida_mangan/common/style.dart';
 import 'package:sida_mangan/data/model/restaurant.dart';
 import 'package:sida_mangan/ui/detail_restaurant_page.dart';
+import 'package:sida_mangan/widgets/ratings_bar.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home_page';
@@ -15,26 +17,51 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 40),
-          const Text('Rekomendasi Restaurant'),
-          const SizedBox(height: 8),
           Container(
-            height: 40,
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: TextField(
-              onChanged: (value) {},
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Hi! Welcome to',
+                  style: myTextTheme.titleMedium,
                 ),
-                labelText: 'Search',
-                suffixIcon: const Icon(Icons.search),
-              ),
+                Text(
+                  'Restaurant App',
+                  style: myTextTheme.headlineSmall,
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 8),
-          Expanded(child: _buildList(context)),
+          const SizedBox(height: 30),
+          // Container(
+          //   height: 40,
+          //   padding: const EdgeInsets.symmetric(horizontal: 15),
+          //   child: TextField(
+          //     onChanged: (value) {},
+          //     decoration: InputDecoration(
+          //       border: OutlineInputBorder(
+          //         borderRadius: BorderRadius.circular(50),
+          //       ),
+          //       labelText: 'Search',
+          //       suffixIcon: const Icon(Icons.search),
+          //     ),
+          //   ),
+          // ),
+          // const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Text(
+              'Recomended For You',
+              style: myTextTheme.bodyLarge,
+            ),
+          ),
+          Expanded(
+            child: _buildList(context),
+          ),
         ],
       ),
     );
@@ -104,15 +131,29 @@ class _HomePageState extends State<HomePage> {
           );
         },
         child: Container(
-          color: Colors.amber,
-          child: Column(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.grey,
+                blurRadius: 10.0,
+                offset: Offset(0, 5.0),
+              ),
+            ],
+          ),
+          child: Row(
             children: [
               Hero(
                 tag: restaurant.id,
                 child: Container(
-                  height: 200,
+                  height: 100,
+                  width: 100,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      bottomLeft: Radius.circular(15),
+                    ),
                     image: DecorationImage(
                       fit: BoxFit.cover,
                       image: NetworkImage(restaurant.pictureId),
@@ -120,8 +161,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              const SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     restaurant.name,
@@ -130,9 +172,11 @@ class _HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  Text(restaurant.rating.toString()),
+                  const SizedBox(height: 8),
+                  MyRatingBar(nilaiRating: restaurant.rating),
+                  Text(restaurant.city),
                 ],
-              )
+              ),
             ],
           ),
         ),
