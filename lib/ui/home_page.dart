@@ -37,21 +37,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           const SizedBox(height: 30),
-          // Container(
-          //   height: 40,
-          //   padding: const EdgeInsets.symmetric(horizontal: 15),
-          //   child: TextField(
-          //     onChanged: (value) {},
-          //     decoration: InputDecoration(
-          //       border: OutlineInputBorder(
-          //         borderRadius: BorderRadius.circular(50),
-          //       ),
-          //       labelText: 'Search',
-          //       suffixIcon: const Icon(Icons.search),
-          //     ),
-          //   ),
-          // ),
-          // const SizedBox(height: 20),
+          
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Text(

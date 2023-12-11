@@ -21,13 +21,14 @@ class _DetailRestaurantState extends State<DetailRestaurant>
   Widget build(BuildContext context) {
     TabController tabController = TabController(length: 2, vsync: this);
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.white,
-      //   elevation: 0,
-      //   iconTheme: const IconThemeData(
-      //     color: Colors.black,
-      //   ),
-      // ),
+      // extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: const IconThemeData(
+          color: Colors.black,
+        ),
+      ),
       body: ListView(
         shrinkWrap: true,
         children: [
@@ -35,7 +36,7 @@ class _DetailRestaurantState extends State<DetailRestaurant>
             tag: widget.restaurant.id,
             child: Container(
               padding: const EdgeInsets.only(left: 15, bottom: 15),
-              height: 200,
+              height: 300,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
@@ -199,26 +200,6 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                         ],
                       ),
                     );
-                    // return Container(
-                    //   decoration: BoxDecoration(
-                    //     borderRadius: BorderRadius.circular(14),
-                    //     color: Colors.white70,
-                    //     image: DecorationImage(
-                    //       fit: BoxFit.cover,
-                    //       image: AssetImage('assets/images/coffee.jpg'),
-                    //     ),
-                    //   ),
-                    //   child: Column(
-                    //     children: [
-                    //       // Image.asset('assets/images/coffee.jpg'),
-                    //       const SizedBox(height: 5),
-                    //       Container(
-                    //         color: Colors.amber,
-                    //         child: Text(drink.name),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // );
                   },
                 ),
               ],
