@@ -89,15 +89,15 @@ class _HomePageState extends State<HomePage> {
             },
           );
         } else if (state.state == ResultState.noData) {
-          return Center(
+          return const Center(
             child: Material(
-              child: Text(state.message),
+              child: Text('Tidak ada Data!'),
             ),
           );
         } else if (state.state == ResultState.error) {
-          return Center(
+          return const Center(
             child: Material(
-              child: Text(state.message),
+              child: Text('Tidak ada koneksi Internet!'),
             ),
           );
         } else {

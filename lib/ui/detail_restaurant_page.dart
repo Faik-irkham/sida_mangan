@@ -327,9 +327,15 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                   ),
                 ],
               );
+            } else if (state.state == ResultState.noData) {
+              return const Center(
+                child: Material(
+                  child: Text('Tidak ada Data!'),
+                ),
+              );
             } else if (state.state == ResultState.error) {
-              return Center(
-                child: Text(state.message),
+              return const Center(
+                child: Text('Tidak ada koneksi Internet!'),
               );
             } else {
               return const Center(child: Text(''));
