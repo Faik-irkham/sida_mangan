@@ -29,10 +29,7 @@ class MyApp extends StatelessWidget {
       routes: {
         OnBoardingScreen.routeName: (context) => const OnBoardingScreen(),
         HomePage.routeName: (context) => const HomePage(),
-        DetailRestaurant.routeName: (context) => DetailRestaurant(
-              restaurant:
-                  ModalRoute.of(context)!.settings.arguments as Restaurant,
-            ),
+        
       },
     );
   }

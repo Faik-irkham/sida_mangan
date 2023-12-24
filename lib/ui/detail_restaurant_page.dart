@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sida_mangan/common/constant.dart';
 import 'package:sida_mangan/common/style.dart';
-import 'package:sida_mangan/data/model/restaurant.dart';
-import 'package:sida_mangan/widgets/text_deskripsi.dart';
+import 'package:sida_mangan/data/api/api_service.dart';
+import 'package:sida_mangan/data/model/detail_restaurant.dart';
+import 'package:sida_mangan/provider/detail_restaurant_provider.dart';
 import 'package:sida_mangan/widgets/ratings_bar.dart';
+import 'package:sida_mangan/widgets/text_deskripsi.dart';
 
 class DetailRestaurant extends StatefulWidget {
   static const routeName = '/detail_restaurant';
 
-  final Restaurant restaurant;
+  final String id;
 
-  const DetailRestaurant({super.key, required this.restaurant});
+  const DetailRestaurant({
+    required this.id,
+    super.key,
+  });
 
   @override
   State<DetailRestaurant> createState() => _DetailRestaurantState();
@@ -19,194 +26,324 @@ class _DetailRestaurantState extends State<DetailRestaurant>
     with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    TabController tabController = TabController(length: 2, vsync: this);
+    TabController tabController = TabController(length: 3, vsync: this);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: const IconThemeData(
-          color: Colors.black,
+      extendBodyBehindAppBar: true,
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   iconTheme: const IconThemeData(
+      //     color: Colors.white,
+      //   ),
+      // ),
+      body: ChangeNotifierProvider<DetailRestaurantsProvider>(
+        create: (_) =>
+            DetailRestaurantsProvider(apiService: ApiService(), id: widget.id),
+        child: Consumer<DetailRestaurantsProvider>(
+          builder: (context, state, _) {
+            if (state.state == ResultState.loading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state.state == ResultState.hasData) {
+              return CustomScrollView(
+                slivers: [
+                  SliverAppBar(
+                    expandedHeight: 300,
+                    floating: false,
+                    pinned: true,
+                    leading: IconButton(
+                      icon: Ink(
+                        decoration: const ShapeDecoration(
+                          color: Colors.white,
+                          shape: CircleBorder(),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.arrow_back,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    flexibleSpace: Hero(
+                      tag: state.result.restaurant.id,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(
+                              imageUrl + state.result.restaurant.pictureId,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        const SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    state.result.restaurant.name,
+                                    style: myTextTheme.bodyLarge,
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    state.result.restaurant.address,
+                                    style: myTextTheme.bodySmall,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  MyRatingBar(
+                                    nilaiRating: state.result.restaurant.rating,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        height: 20,
+                                        child: ListView.builder(
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: state.result.restaurant
+                                              .categories.length,
+                                          itemBuilder: (context, index) =>
+                                              Container(
+                                            margin:
+                                                const EdgeInsets.only(right: 5),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 12,
+                                              vertical: 3,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[300],
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
+                                            ),
+                                            child: Text(
+                                              state.result.restaurant
+                                                  .categories[index].name,
+                                              style: const TextStyle(
+                                                fontSize: 10,
+                                                color: Colors.black45,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 5,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: Text(
+                                  state.result.restaurant.city,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: ReadMoreText(
+                            text: state.result.restaurant.description,
+                            maxLength: 120,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: TabBar(
+                            controller: tabController,
+                            labelColor: Colors.white,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            dividerColor: Colors.transparent,
+                            indicatorPadding: const EdgeInsets.symmetric(
+                              vertical: 7,
+                            ),
+                            unselectedLabelColor: Colors.black,
+                            indicator: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            tabs: [
+                              Tab(
+                                child: Text(
+                                  'Foods',
+                                  style: myTextTheme.bodyMedium,
+                                ),
+                              ),
+                              Tab(
+                                child: Text(
+                                  'Drinks',
+                                  style: myTextTheme.bodyMedium,
+                                ),
+                              ),
+                              Tab(
+                                child: Text(
+                                  'Reviews',
+                                  style: myTextTheme.bodyMedium,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 800,
+                          width: double.maxFinite,
+                          child: TabBarView(
+                            controller: tabController,
+                            children: [
+                              // Foods GridView
+                              GridView.builder(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 12,
+                                  mainAxisSpacing: 12,
+                                ),
+                                itemCount:
+                                    state.result.restaurant.menus.foods.length,
+                                itemBuilder: (context, index) {
+                                  Category food = state
+                                      .result.restaurant.menus.foods[index];
+                                  return Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                          ),
+                                          child: Image.asset(
+                                            'assets/images/food.jpg',
+                                            height: 85,
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        ListTile(
+                                          title: Text(food.name),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                              // // Drinks GridView
+                              GridView.builder(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 2 / 2.1,
+                                  crossAxisSpacing: 12,
+                                  mainAxisSpacing: 12,
+                                ),
+                                itemCount:
+                                    state.result.restaurant.menus.drinks.length,
+                                itemBuilder: (context, index) {
+                                  Category drink = state
+                                      .result.restaurant.menus.drinks[index];
+                                  return Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                          ),
+                                          child: Image.asset(
+                                            'assets/images/coffee.jpg',
+                                            height: 85,
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        ListTile(
+                                          title: Text(drink.name),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+
+                              // List Reviews
+                              ListView.builder(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                                shrinkWrap: true,
+                                // physics: const NeverScrollableScrollPhysics(),
+                                itemCount: state
+                                    .result.restaurant.customerReviews.length,
+                                itemBuilder: (context, index) {
+                                  CustomerReview review = state
+                                      .result.restaurant.customerReviews[index];
+                                  return Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: ListTile(
+                                      title: Text(review.name),
+                                      subtitle: Text(review.review),
+                                      trailing: Text(review.date),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            } else if (state.state == ResultState.error) {
+              return Center(
+                child: Text(state.message),
+              );
+            } else {
+              return const Center(child: Text(''));
+            }
+          },
         ),
-      ),
-      body: ListView(
-        shrinkWrap: true,
-        children: [
-          Hero(
-            tag: widget.restaurant.id,
-            child: Container(
-              padding: const EdgeInsets.only(left: 15, bottom: 15),
-              height: 300,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                    widget.restaurant.pictureId,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.restaurant.name,
-                      style: myTextTheme.bodyLarge,
-                    ),
-                    const SizedBox(height: 10),
-                    MyRatingBar(
-                      nilaiRating: widget.restaurant.rating,
-                    ),
-                  ],
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 5,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Text(
-                    widget.restaurant.city,
-                    style: const TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 15),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: ReadMoreText(
-              text: widget.restaurant.description,
-              maxLength: 120,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: TabBar(
-              controller: tabController,
-              labelColor: Colors.white,
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicatorPadding: const EdgeInsets.symmetric(
-                vertical: 7,
-              ),
-              unselectedLabelColor: Colors.black,
-              indicator: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(50),
-              ),
-              tabs: [
-                Tab(
-                  child: Text(
-                    'Foods',
-                    style: myTextTheme.bodyMedium,
-                  ),
-                ),
-                Tab(
-                  child: Text(
-                    'Drinks',
-                    style: myTextTheme.bodyMedium,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 500,
-            width: double.maxFinite,
-            child: TabBarView(
-              controller: tabController,
-              children: [
-                // Foods GridView
-                GridView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                  ),
-                  itemCount: widget.restaurant.menus.foods.length,
-                  itemBuilder: (context, index) {
-                    Food food = widget.restaurant.menus.foods[index];
-                    return Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
-                            ),
-                            child: Image.asset(
-                              'assets/images/food.jpg',
-                              height: 85,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          ListTile(
-                            title: Text(food.name),
-                          )
-                        ],
-                      ),
-                    );
-                  },
-                ),
-                // Drinks GridView
-                GridView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 2 / 2.1,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                  ),
-                  itemCount: widget.restaurant.menus.drinks.length,
-                  itemBuilder: (context, index) {
-                    Drink drink = widget.restaurant.menus.drinks[index];
-                    return Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
-                            ),
-                            child: Image.asset(
-                              'assets/images/coffee.jpg',
-                              height: 85,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          ListTile(
-                            title: Text(drink.name),
-                          )
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sida_mangan/common/style.dart';
-import 'package:sida_mangan/data/model/restaurant.dart';
+import 'package:sida_mangan/data/api/api_service.dart';
+import 'package:sida_mangan/provider/restaurants_provider.dart';
 import 'package:sida_mangan/ui/detail_restaurant_page.dart';
-import 'package:sida_mangan/widgets/ratings_bar.dart';
+import 'package:sida_mangan/widgets/card_restaurant.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home_page';
@@ -13,6 +15,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +44,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           const SizedBox(height: 30),
-          
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Text(
@@ -46,130 +52,62 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Expanded(
-            child: _buildList(context),
+            child: ChangeNotifierProvider<RestaurantsProvider>(
+              create: (_) => RestaurantsProvider(apiService: ApiService()),
+              child: _buildList(context),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Future<List<Restaurant>> _loadRestaurantData() async {
-    try {
-      final jsonString = await DefaultAssetBundle.of(context)
-          .loadString('assets/local_restaurant.json');
-      return parseRestaurant(jsonString);
-    } catch (e) {
-      return [];
-    }
-  }
-
-  FutureBuilder<List<Restaurant>> _buildList(BuildContext context) {
-    return FutureBuilder<List<Restaurant>>(
-      future: _loadRestaurantData(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        } else if (snapshot.hasError) {
+  Widget _buildList(BuildContext context) {
+    return Consumer<RestaurantsProvider>(
+      builder: (context, state, _) {
+        if (state.state == ResultState.loading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state.state == ResultState.hasData) {
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: state.result.restaurants.length,
+            itemBuilder: (context, index) {
+              var restaurant = state.result.restaurants[index];
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailRestaurant(
+                        id: restaurant.id!,
+                      ),
+                    ),
+                  );
+                },
+                child: CardRestaurant(restaurant: restaurant),
+              );
+            },
+          );
+        } else if (state.state == ResultState.noData) {
           return Center(
-            child: Text(
-              'Error: ${snapshot.error}',
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Colors.red,
-              ),
+            child: Material(
+              child: Text(state.message),
+            ),
+          );
+        } else if (state.state == ResultState.error) {
+          return Center(
+            child: Material(
+              child: Text(state.message),
             ),
           );
         } else {
-          final List<Restaurant> restaurants = snapshot.data!;
-          if (restaurants.isEmpty) {
-            return const Center(
-              child: Text(
-                'Tidak ada data!',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            );
-          } else {
-            return ListView.builder(
-              itemCount: restaurants.length,
-              itemBuilder: (context, index) {
-                return _builRestaurantItem(context, restaurants[index]);
-              },
-            );
-          }
+          return const Center(
+            child: Material(
+              child: Text(''),
+            ),
+          );
         }
       },
-    );
-  }
-
-  Widget _builRestaurantItem(BuildContext context, Restaurant restaurant) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(
-            context,
-            DetailRestaurant.routeName,
-            arguments: restaurant,
-          );
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.grey,
-                blurRadius: 10.0,
-                offset: Offset(0, 5.0),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Hero(
-                tag: restaurant.id,
-                child: Container(
-                  height: 100,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      bottomLeft: Radius.circular(15),
-                    ),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(restaurant.pictureId),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    restaurant.name,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  MyRatingBar(nilaiRating: restaurant.rating),
-                  Text(
-                    restaurant.city,
-                    style: myTextTheme.bodySmall,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

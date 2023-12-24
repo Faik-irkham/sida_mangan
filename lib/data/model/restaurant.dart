@@ -1,81 +1,58 @@
-import 'dart:convert';
+class RestaurantsModel {
+  final bool error;
+  final String message;
+  final int count;
+  final List<Restaurants> restaurants;
 
-class Restaurant {
-  final String id;
-  final String name;
-  final String description;
-  final String pictureId;
-  final String city;
-  final double rating;
-  final Menus menus;
+  RestaurantsModel({
+    required this.error,
+    required this.message,
+    required this.count,
+    required this.restaurants,
+  });
 
-  Restaurant({
+  factory RestaurantsModel.fromJson(Map<String, dynamic> json) =>
+      RestaurantsModel(
+        error: json["error"],
+        message: json["message"],
+        count: json["count"],
+        restaurants: List<Restaurants>.from((json["restaurants"] as List)
+            .map((x) => Restaurants.fromJson(x))
+            .where((restaurant) =>
+                restaurant.id != null &&
+                restaurant.name != null &&
+                restaurant.description != null &&
+                restaurant.pictureId != null &&
+                restaurant.city != null &&
+                restaurant.rating != null)),
+        // restaurants: List<Restaurant>.from(
+        //     json["restaurants"].map((x) => Restaurant.fromJson(x))),
+      );
+}
+
+class Restaurants {
+  final String? id;
+  final String? name;
+  final String? description;
+  final String? pictureId;
+  final String? city;
+  final double? rating;
+
+  Restaurants({
     required this.id,
     required this.name,
     required this.description,
     required this.pictureId,
     required this.city,
     required this.rating,
-    required this.menus,
   });
 
-  factory Restaurant.fromJson(Map<String, dynamic> json) => Restaurant(
+  factory Restaurants.fromJson(Map<String, dynamic> json) => Restaurants(
         id: json["id"],
         name: json["name"],
         description: json["description"],
         pictureId: json["pictureId"],
         city: json["city"],
         rating: json["rating"].toDouble(),
-        menus: Menus.fromJson(json["menus"]),
       );
-}
-
-class Menus {
-  final List<Food> foods;
-  final List<Drink> drinks;
-
-  Menus({
-    required this.foods,
-    required this.drinks,
-  });
-
-  factory Menus.fromJson(Map<String, dynamic> json) => Menus(
-        foods: List<Food>.from(json["foods"].map((x) => Food.fromJson(x))),
-        drinks: List<Drink>.from(json["drinks"].map((x) => Drink.fromJson(x))),
-      );
-}
-
-class Food {
-  final String name;
-
-  Food({
-    required this.name,
-  });
-
-  factory Food.fromJson(Map<String, dynamic> json) => Food(
-        name: json["name"],
-      );
-}
-
-class Drink {
-  final String name;
-
-  Drink({
-    required this.name,
-  });
-
-  factory Drink.fromJson(Map<String, dynamic> json) => Drink(
-        name: json["name"],
-      );
-}
-
-List<Restaurant> parseRestaurant(String? json) {
-  if (json == null) {
-    return [];
-  }
-
-  final Map<String, dynamic> parsed = jsonDecode(json);
-  final List<dynamic> restaurantList = parsed['restaurants'];
-
-  return restaurantList.map((json) => Restaurant.fromJson(json)).toList();
 }
