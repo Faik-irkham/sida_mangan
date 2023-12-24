@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sida_mangan/common/style.dart';
-import 'package:sida_mangan/data/model/restaurant.dart';
-import 'package:sida_mangan/ui/detail_restaurant_page.dart';
 import 'package:sida_mangan/ui/home_page.dart';
 import 'package:sida_mangan/ui/onboarding_screen.dart';
 

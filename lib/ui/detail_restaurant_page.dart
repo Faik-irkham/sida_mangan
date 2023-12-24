@@ -29,13 +29,6 @@ class _DetailRestaurantState extends State<DetailRestaurant>
     TabController tabController = TabController(length: 3, vsync: this);
     return Scaffold(
       extendBodyBehindAppBar: true,
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   iconTheme: const IconThemeData(
-      //     color: Colors.white,
-      //   ),
-      // ),
       body: ChangeNotifierProvider<DetailRestaurantsProvider>(
         create: (_) =>
             DetailRestaurantsProvider(apiService: ApiService(), id: widget.id),
@@ -309,7 +302,6 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 15),
                                 shrinkWrap: true,
-                                // physics: const NeverScrollableScrollPhysics(),
                                 itemCount: state
                                     .result.restaurant.customerReviews.length,
                                 itemBuilder: (context, index) {

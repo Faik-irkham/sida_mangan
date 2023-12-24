@@ -25,8 +25,6 @@ class RestaurantsModel {
                 restaurant.pictureId != null &&
                 restaurant.city != null &&
                 restaurant.rating != null)),
-        // restaurants: List<Restaurant>.from(
-        //     json["restaurants"].map((x) => Restaurant.fromJson(x))),
       );
 }
 
