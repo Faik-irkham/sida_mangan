@@ -3,6 +3,7 @@ import 'package:sida_mangan/common/style.dart';
 import 'package:sida_mangan/data/api/api_service.dart';
 import 'package:sida_mangan/provider/restaurants_provider.dart';
 import 'package:sida_mangan/ui/detail_restaurant_page.dart';
+import 'package:sida_mangan/ui/search_restaurant.dart';
 import 'package:sida_mangan/widgets/card_restaurant.dart';
 import 'package:provider/provider.dart';
 
@@ -29,26 +30,33 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 40),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Hi! Welcome to',
-                  style: myTextTheme.titleMedium,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Hi! Welcome to',
+                      style: myTextTheme.titleMedium,
+                    ),
+                    Text(
+                      'Restaurant App',
+                      style: myTextTheme.headlineSmall,
+                    ),
+                  ],
                 ),
-                Text(
-                  'Restaurant App',
-                  style: myTextTheme.headlineSmall,
+                IconButton(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SearchRestaurantPage(),
+                    ),
+                  ),
+                  icon: const Icon(Icons.search),
+                  iconSize: 24,
                 ),
               ],
-            ),
-          ),
-          const SizedBox(height: 30),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Text(
-              'Recomended For You',
-              style: myTextTheme.bodyLarge,
             ),
           ),
           Expanded(
