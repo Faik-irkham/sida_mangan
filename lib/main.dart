@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget {
       routes: {
         OnBoardingScreen.routeName: (context) => const OnBoardingScreen(),
         HomePage.routeName: (context) => const HomePage(),
-        
       },
     );
   }
