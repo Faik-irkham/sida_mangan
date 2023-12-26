@@ -44,40 +44,4 @@ class SearchRestaurantsProvider extends ChangeNotifier {
       }
     }
   }
-  // ApiService apiService = ApiService();
-
-  // late SearchRestaurantModel _restaurantsResult;
-  // late ResultState _state;
-  // String _message = '';
-
-  // String get message => _message;
-  // SearchRestaurantModel get result => _restaurantsResult;
-  // ResultState get state => _state;
-
-  // Future<dynamic> searchRestaurants(String value) async {
-  //   try {
-  //     _state = ResultState.loading;
-  //     notifyListeners();
-  //     final listRestaurant = await apiService.searchRestaurants(value);
-  //     if (listRestaurant.restaurants.isEmpty) {
-  //       _state = ResultState.noData;
-  //       notifyListeners();
-  //       return _message = 'Empty Data';
-  //     } else {
-  //       _state = ResultState.hasData;
-  //       notifyListeners();
-  //       _restaurantsResult = listRestaurant;
-  //     }
-  //   } catch (e) {
-  //     if (e is SocketException) {
-  //       _state = ResultState.error;
-  //       notifyListeners();
-  //       return _message = 'Tidak ada koneksi Internet!';
-  //     } else {
-  //       _state = ResultState.error;
-  //       notifyListeners();
-  //       return _message = 'Failed to Load Data';
-  //     }
-  //   }
-  // }
 }
