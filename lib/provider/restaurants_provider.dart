@@ -1,6 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:sida_mangan/data/api/api_service.dart';
-import 'package:sida_mangan/data/model/restaurant.dart';
+import 'package:sida_mangan/data/model/restaurant_model.dart';
 
 enum ResultState { loading, noData, hasData, error }
 
@@ -36,9 +38,15 @@ class RestaurantsProvider extends ChangeNotifier {
         return _restaurantsResult = restaurant;
       }
     } catch (e) {
-      _state = ResultState.error;
-      notifyListeners();
-      return _message = 'Error --> $e';
+      if (e is SocketException) {
+        _state = ResultState.error;
+        notifyListeners();
+        return _message = 'Tidak ada koneksi Internet!';
+      } else {
+        _state = ResultState.error;
+        notifyListeners();
+        return _message = 'Failed to Load Data';
+      }
     }
   }
 }

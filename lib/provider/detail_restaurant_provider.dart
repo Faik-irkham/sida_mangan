@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sida_mangan/data/api/api_service.dart';
-import 'package:sida_mangan/data/model/detail_restaurant.dart';
+import 'package:sida_mangan/data/model/detail_restaurant_model.dart';
 
 enum ResultState { loading, noData, hasData, error }
 

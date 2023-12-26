@@ -3,6 +3,7 @@ import 'package:sida_mangan/common/style.dart';
 import 'package:sida_mangan/data/api/api_service.dart';
 import 'package:sida_mangan/provider/restaurants_provider.dart';
 import 'package:sida_mangan/ui/detail_restaurant_page.dart';
+import 'package:sida_mangan/ui/search_restaurant_page.dart';
 import 'package:sida_mangan/widgets/card_restaurant.dart';
 import 'package:provider/provider.dart';
 
@@ -46,13 +47,12 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 IconButton(
-                  onPressed: () {},
-                  // () => Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => const SearchRestaurantPage(),
-                  //   ),
-                  // ),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SearchRestaurantPage(),
+                    ),
+                  ),
                   icon: const Icon(Icons.search),
                   iconSize: 24,
                 ),

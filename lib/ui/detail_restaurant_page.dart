@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sida_mangan/common/constant.dart';
 import 'package:sida_mangan/common/style.dart';
 import 'package:sida_mangan/data/api/api_service.dart';
-import 'package:sida_mangan/data/model/detail_restaurant.dart';
+import 'package:sida_mangan/data/model/detail_restaurant_model.dart';
 import 'package:sida_mangan/provider/detail_restaurant_provider.dart';
 import 'package:sida_mangan/widgets/ratings_bar.dart';
 import 'package:sida_mangan/widgets/text_deskripsi.dart';

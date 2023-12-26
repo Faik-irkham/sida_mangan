@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sida_mangan/common/constant.dart';
 import 'package:sida_mangan/common/style.dart';
-import 'package:sida_mangan/data/model/restaurant.dart';
+import 'package:sida_mangan/data/model/restaurant_model.dart';
 import 'package:sida_mangan/widgets/ratings_bar.dart';
 
 class CardRestaurant extends StatelessWidget {
-  final Restaurants restaurant;
+  final Restaurant restaurant;
   const CardRestaurant({
     super.key,
     required this.restaurant,

@@ -2,7 +2,7 @@ class RestaurantsModel {
   final bool error;
   final String message;
   final int count;
-  final List<Restaurants> restaurants;
+  final List<Restaurant> restaurants;
 
   RestaurantsModel({
     required this.error,
@@ -16,8 +16,8 @@ class RestaurantsModel {
         error: json["error"],
         message: json["message"],
         count: json["count"],
-        restaurants: List<Restaurants>.from((json["restaurants"] as List)
-            .map((x) => Restaurants.fromJson(x))
+        restaurants: List<Restaurant>.from((json["restaurants"] as List)
+            .map((x) => Restaurant.fromJson(x))
             .where((restaurant) =>
                 restaurant.id != null &&
                 restaurant.name != null &&
@@ -28,7 +28,7 @@ class RestaurantsModel {
       );
 }
 
-class Restaurants {
+class Restaurant {
   final String? id;
   final String? name;
   final String? description;
@@ -36,7 +36,7 @@ class Restaurants {
   final String? city;
   final double? rating;
 
-  Restaurants({
+  Restaurant({
     required this.id,
     required this.name,
     required this.description,
@@ -45,7 +45,7 @@ class Restaurants {
     required this.rating,
   });
 
-  factory Restaurants.fromJson(Map<String, dynamic> json) => Restaurants(
+  factory Restaurant.fromJson(Map<String, dynamic> json) => Restaurant(
         id: json["id"],
         name: json["name"],
         description: json["description"],
