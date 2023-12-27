@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sida_mangan/common/style.dart';
+import 'package:sida_mangan/provider/review_restaurant_provider.dart';
 import 'package:sida_mangan/ui/home_page.dart';
 import 'package:sida_mangan/ui/onboarding_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => ReviewProviders(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

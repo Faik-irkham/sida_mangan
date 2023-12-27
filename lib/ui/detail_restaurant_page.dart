@@ -6,6 +6,7 @@ import 'package:sida_mangan/data/api/api_service.dart';
 import 'package:sida_mangan/data/model/detail_restaurant_model.dart';
 import 'package:sida_mangan/provider/detail_restaurant_provider.dart';
 import 'package:sida_mangan/widgets/ratings_bar.dart';
+import 'package:sida_mangan/widgets/review_restaurant.dart';
 import 'package:sida_mangan/widgets/text_deskripsi.dart';
 
 class DetailRestaurant extends StatefulWidget {
@@ -27,6 +28,7 @@ class _DetailRestaurantState extends State<DetailRestaurant>
   @override
   Widget build(BuildContext context) {
     TabController tabController = TabController(length: 3, vsync: this);
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: ChangeNotifierProvider<DetailRestaurantsProvider>(
@@ -163,6 +165,39 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                           child: ReadMoreText(
                             text: state.result.restaurant.description,
                             maxLength: 120,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                builder: (context) => ReviewRestaurantWidget(
+                                  id: state.result.restaurant.id,
+                                ),
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 5,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  'Add Review',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 20),
