@@ -22,9 +22,15 @@ class _ReviewRestaurantWidgetState extends State<ReviewRestaurantWidget> {
     super.dispose();
   }
 
+  bool validate() {
+    if (nameController.text.isEmpty && reviewController.text.isEmpty) {
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(widget.id);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -100,15 +106,29 @@ class _ReviewRestaurantWidgetState extends State<ReviewRestaurantWidget> {
                   ),
                 ),
                 onPressed: () {
-                  Provider.of<ReviewProviders>(context, listen: false)
-                      .apiService
-                      .addReviews(
-                        AddReviewModel(
-                          id: widget.id,
-                          name: nameController.text,
-                          review: reviewController.text,
-                        ),
-                      );
+                  if (validate()) {
+                    Provider.of<ReviewProviders>(context, listen: false)
+                        .apiService
+                        .addReviews(
+                          AddReviewModel(
+                            id: widget.id,
+                            name: nameController.text,
+                            review: reviewController.text,
+                          ),
+                        );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Review submitted successfully.'),
+                      ),
+                    );
+                    Navigator.of(context).pop();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Name cannot be empty.'),
+                      ),
+                    );
+                  }
                 },
                 child: const Text(
                   'Submit',
