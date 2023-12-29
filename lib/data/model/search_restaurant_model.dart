@@ -1,15 +1,3 @@
-// To parse this JSON data, do
-//
-//     final searchRestaurantModel = searchRestaurantModelFromJson(jsonString);
-
-import 'dart:convert';
-
-SearchRestaurantModel searchRestaurantModelFromJson(String str) =>
-    SearchRestaurantModel.fromJson(json.decode(str));
-
-String searchRestaurantModelToJson(SearchRestaurantModel data) =>
-    json.encode(data.toJson());
-
 class SearchRestaurantModel {
   final bool error;
   final int founded;

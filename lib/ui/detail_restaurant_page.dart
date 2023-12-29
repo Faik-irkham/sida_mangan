@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:sida_mangan/common/constant.dart';
 import 'package:sida_mangan/common/style.dart';
 import 'package:sida_mangan/data/api/api_service.dart';
-import 'package:sida_mangan/data/model/detail_restaurant_model.dart';
+import 'package:sida_mangan/data/model/category_restaurant_model.dart';
+import 'package:sida_mangan/data/model/customer_review_model.dart';
 import 'package:sida_mangan/provider/detail_restaurant_provider.dart';
 import 'package:sida_mangan/widgets/ratings_bar.dart';
 import 'package:sida_mangan/widgets/review_restaurant.dart';
@@ -111,9 +112,8 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                                           shrinkWrap: true,
                                           scrollDirection: Axis.horizontal,
                                           itemCount: state.result.restaurant
-                                              .categories.length,
-                                          itemBuilder: (context, index) =>
-                                              Container(
+                                              .category.length,
+                                          itemBuilder: (_, index) => Container(
                                             margin:
                                                 const EdgeInsets.only(right: 5),
                                             padding: const EdgeInsets.symmetric(
@@ -127,7 +127,7 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                                             ),
                                             child: Text(
                                               state.result.restaurant
-                                                  .categories[index].name,
+                                                  .category[index].name,
                                               style: const TextStyle(
                                                 fontSize: 10,
                                                 color: Colors.black45,
@@ -246,6 +246,7 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                             children: [
                               // Foods GridView
                               GridView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 15),
                                 gridDelegate:
@@ -255,10 +256,10 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                                   mainAxisSpacing: 12,
                                 ),
                                 itemCount:
-                                    state.result.restaurant.menus.foods.length,
+                                    state.result.restaurant.menu.food.length,
                                 itemBuilder: (context, index) {
-                                  Category food = state
-                                      .result.restaurant.menus.foods[index];
+                                  Category food =
+                                      state.result.restaurant.menu.food[index];
                                   return Card(
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
@@ -289,6 +290,7 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                               ),
                               // // Drinks GridView
                               GridView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 15),
                                 gridDelegate:
@@ -299,10 +301,10 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                                   mainAxisSpacing: 12,
                                 ),
                                 itemCount:
-                                    state.result.restaurant.menus.drinks.length,
+                                    state.result.restaurant.menu.drink.length,
                                 itemBuilder: (context, index) {
-                                  Category drink = state
-                                      .result.restaurant.menus.drinks[index];
+                                  Category drink =
+                                      state.result.restaurant.menu.drink[index];
                                   return Card(
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
@@ -334,14 +336,15 @@ class _DetailRestaurantState extends State<DetailRestaurant>
 
                               // List Reviews
                               ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 15),
                                 shrinkWrap: true,
                                 itemCount: state
-                                    .result.restaurant.customerReviews.length,
+                                    .result.restaurant.customerReview.length,
                                 itemBuilder: (context, index) {
                                   CustomerReview review = state
-                                      .result.restaurant.customerReviews[index];
+                                      .result.restaurant.customerReview[index];
                                   return Card(
                                     shape: RoundedRectangleBorder(
                                         borderRadius:

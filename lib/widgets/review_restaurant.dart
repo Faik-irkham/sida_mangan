@@ -19,6 +19,8 @@ class _ReviewRestaurantWidgetState extends State<ReviewRestaurantWidget> {
   @override
   void dispose() {
     reviewFocusNode.dispose();
+    nameController.dispose();
+    reviewController.dispose();
     super.dispose();
   }
 

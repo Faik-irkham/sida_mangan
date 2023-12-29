@@ -14,7 +14,7 @@ class SearchRestaurantPage extends StatefulWidget {
 }
 
 class _SearchRestaurantPageState extends State<SearchRestaurantPage> {
-  final TextEditingController _textController = TextEditingController();
+  final _textController = TextEditingController();
 
   @override
   void dispose() {
@@ -49,7 +49,6 @@ class _SearchRestaurantPageState extends State<SearchRestaurantPage> {
                     Provider.of<SearchRestaurantsProvider>(context,
                             listen: false)
                         .searchRestaurant(_textController.text);
-                    setState(() {});
                   },
                   decoration: InputDecoration(
                     border: InputBorder.none,

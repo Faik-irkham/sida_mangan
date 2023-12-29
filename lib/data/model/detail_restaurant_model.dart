@@ -1,3 +1,6 @@
+import 'package:sida_mangan/data/model/category_restaurant_model.dart';
+import 'package:sida_mangan/data/model/customer_review_model.dart';
+import 'package:sida_mangan/data/model/menu_model.dart';
 
 class DetailRestaurantModel {
   final bool error;
@@ -10,13 +13,14 @@ class DetailRestaurantModel {
     required this.restaurant,
   });
 
-  factory DetailRestaurantModel.fromJson(Map<String, dynamic> json) =>
-      DetailRestaurantModel(
-        error: json["error"],
-        message: json["message"],
-        restaurant: Restaurant.fromJson(json["restaurant"]),
-      );
-
+  factory DetailRestaurantModel.fromJson(Map<String, dynamic> json) {
+    return DetailRestaurantModel(
+      error: json["error"],
+      message: json["message"],
+      restaurant: Restaurant.fromJson(json["restaurant"]),
+    );
+  }
+      
 }
 
 class Restaurant {
@@ -26,10 +30,10 @@ class Restaurant {
   final String city;
   final String address;
   final String pictureId;
-  final List<Category> categories;
-  final Menus menus;
+  final List<Category> category;
+  final Menu menu;
   final double rating;
-  final List<CustomerReview> customerReviews;
+  final List<CustomerReview> customerReview;
 
   Restaurant({
     required this.id,
@@ -38,10 +42,10 @@ class Restaurant {
     required this.city,
     required this.address,
     required this.pictureId,
-    required this.categories,
-    required this.menus,
+    required this.category,
+    required this.menu,
     required this.rating,
-    required this.customerReviews,
+    required this.customerReview,
   });
 
   factory Restaurant.fromJson(Map<String, dynamic> json) => Restaurant(
@@ -51,62 +55,17 @@ class Restaurant {
         city: json["city"],
         address: json["address"],
         pictureId: json["pictureId"],
-        categories: List<Category>.from(
+        category: List<Category>.from(
             json["categories"].map((x) => Category.fromJson(x))),
-        menus: Menus.fromJson(json["menus"]),
+        menu: Menu.fromJson(json["menus"]),
         rating: json["rating"].toDouble(),
-        customerReviews: List<CustomerReview>.from(
+        customerReview: List<CustomerReview>.from(
             json["customerReviews"].map((x) => CustomerReview.fromJson(x))),
       );
-
-  
 }
 
-class Category {
-  final String name;
 
-  Category({
-    required this.name,
-  });
 
-  factory Category.fromJson(Map<String, dynamic> json) => Category(
-        name: json["name"],
-      );
 
-}
 
-class CustomerReview {
-  final String name;
-  final String review;
-  final String date;
 
-  CustomerReview({
-    required this.name,
-    required this.review,
-    required this.date,
-  });
-
-  factory CustomerReview.fromJson(Map<String, dynamic> json) => CustomerReview(
-        name: json["name"],
-        review: json["review"],
-        date: json["date"],
-      );
-}
-
-class Menus {
-  final List<Category> foods;
-  final List<Category> drinks;
-
-  Menus({
-    required this.foods,
-    required this.drinks,
-  });
-
-  factory Menus.fromJson(Map<String, dynamic> json) => Menus(
-        foods:
-            List<Category>.from(json["foods"].map((x) => Category.fromJson(x))),
-        drinks: List<Category>.from(
-            json["drinks"].map((x) => Category.fromJson(x))),
-      );
-
-}

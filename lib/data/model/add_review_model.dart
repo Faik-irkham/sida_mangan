@@ -9,11 +9,13 @@ class AddReviewModel {
     required this.review,
   });
 
-  factory AddReviewModel.fromJson(Map<String, dynamic> json) => AddReviewModel(
-        id: json["id"],
-        name: json["name"],
-        review: json["review"],
-      );
+  factory AddReviewModel.fromJson(Map<String, dynamic> json) {
+    return AddReviewModel(
+      id: json["id"],
+      name: json["name"],
+      review: json["review"],
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "id": id,
