@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class MyRatingBar extends StatelessWidget {
-  final double nilaiRating;
+  final double rating;
 
   const MyRatingBar({
     super.key,
-    required this.nilaiRating,
+    required this.rating,
   });
 
   @override
@@ -14,7 +14,7 @@ class MyRatingBar extends StatelessWidget {
     return Row(
       children: [
         RatingBar.builder(
-          initialRating: nilaiRating,
+          initialRating: rating,
           minRating: 1,
           direction: Axis.horizontal,
           allowHalfRating: true,
@@ -28,7 +28,7 @@ class MyRatingBar extends StatelessWidget {
         ),
         const SizedBox(width: 5),
         Text(
-          '($nilaiRating)',
+          '($rating)',
           style: const TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w400,
