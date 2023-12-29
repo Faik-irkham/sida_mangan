@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sida_mangan/common/constant.dart';
 import 'package:sida_mangan/common/style.dart';
@@ -102,8 +103,7 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                                   ),
                                   const SizedBox(height: 10),
                                   MyRatingBar(
-                                    rating:
-                                        restaurant.result.restaurant.rating,
+                                    rating: restaurant.result.restaurant.rating,
                                   ),
                                   const SizedBox(height: 10),
                                   Row(
@@ -345,8 +345,24 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                                 itemCount: restaurant
                                     .result.restaurant.customerReview.length,
                                 itemBuilder: (context, index) {
-                                  CustomerReview review = restaurant
-                                      .result.restaurant.customerReview[index];
+                                  List<CustomerReview> reviews = List.from(
+                                    restaurant.result.restaurant.customerReview,
+                                  );
+
+                                  // Urutkan review berdasarkan tanggal terbaru
+                                  reviews.sort(
+                                    (a, b) => DateFormat(
+                                            'dd MMMM yyyy', 'id_ID')
+                                        .parse(b.date)
+                                        .compareTo(
+                                          DateFormat('dd MMMM yyyy', 'id_ID')
+                                              .parse(a.date),
+                                        ),
+                                  );
+
+                                  CustomerReview review = reviews[index];
+                                  // CustomerReview review = restaurant
+                                  //     .result.restaurant.customerReview[index];
                                   return Card(
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
