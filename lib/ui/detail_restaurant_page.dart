@@ -348,8 +348,6 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                                   List<CustomerReview> reviews = List.from(
                                     restaurant.result.restaurant.customerReview,
                                   );
-
-                                  // Urutkan review berdasarkan tanggal terbaru
                                   reviews.sort(
                                     (a, b) => DateFormat(
                                             'dd MMMM yyyy', 'id_ID')
@@ -361,8 +359,6 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                                   );
 
                                   CustomerReview review = reviews[index];
-                                  // CustomerReview review = restaurant
-                                  //     .result.restaurant.customerReview[index];
                                   return Card(
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
