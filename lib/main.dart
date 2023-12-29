@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:sida_mangan/common/style.dart';
 import 'package:sida_mangan/data/api/api_service.dart';
@@ -8,7 +9,8 @@ import 'package:sida_mangan/provider/search_restaurant_provider.dart';
 import 'package:sida_mangan/ui/home_page.dart';
 import 'package:sida_mangan/ui/onboarding_screen.dart';
 
-void main() {
+Future<void> main() async {
+  await initializeDateFormatting('id_ID', null);
   runApp(
     MultiProvider(
       providers: [
@@ -21,7 +23,6 @@ void main() {
         ChangeNotifierProvider(
           create: (context) => RestaurantsProvider(apiService: ApiService()),
         ),
-
       ],
       child: const MyApp(),
     ),
