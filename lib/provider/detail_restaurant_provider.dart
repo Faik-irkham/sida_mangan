@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sida_mangan/data/api/api_service.dart';
 import 'package:sida_mangan/data/model/detail_restaurant_model.dart';
-
-enum ResultState { loading, noData, hasData, error }
+import 'package:sida_mangan/common/result_state.dart';
 
 class DetailRestaurantsProvider extends ChangeNotifier {
   final ApiService apiService;

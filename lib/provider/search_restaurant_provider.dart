@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:sida_mangan/data/api/api_service.dart';
 import 'package:sida_mangan/data/model/search_restaurant_model.dart';
 
-enum ResultState { loading, noData, hasData, error }
-
 class SearchRestaurantsProvider extends ChangeNotifier {
   ApiService apiService = ApiService();
   late SearchRestaurantModel _restaurantResult =

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sida_mangan/common/style.dart';
 import 'package:sida_mangan/provider/restaurants_provider.dart';
+import 'package:sida_mangan/common/result_state.dart';
 import 'package:sida_mangan/ui/detail_restaurant_page.dart';
 import 'package:sida_mangan/ui/search_restaurant_page.dart';
 import 'package:sida_mangan/widgets/card_restaurant.dart';

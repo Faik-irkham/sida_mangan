@@ -6,6 +6,7 @@ import 'package:sida_mangan/data/api/api_service.dart';
 import 'package:sida_mangan/data/model/category_restaurant_model.dart';
 import 'package:sida_mangan/data/model/customer_review_model.dart';
 import 'package:sida_mangan/provider/detail_restaurant_provider.dart';
+import 'package:sida_mangan/common/result_state.dart';
 import 'package:sida_mangan/widgets/ratings_bar.dart';
 import 'package:sida_mangan/widgets/review_restaurant.dart';
 import 'package:sida_mangan/widgets/text_deskripsi.dart';
@@ -36,10 +37,10 @@ class _DetailRestaurantState extends State<DetailRestaurant>
         create: (_) =>
             DetailRestaurantsProvider(apiService: ApiService(), id: widget.id),
         child: Consumer<DetailRestaurantsProvider>(
-          builder: (context, state, _) {
-            if (state.state == ResultState.loading) {
+          builder: (context, restaurant, _) {
+            if (restaurant.state == ResultState.loading) {
               return const Center(child: CircularProgressIndicator());
-            } else if (state.state == ResultState.hasData) {
+            } else if (restaurant.state == ResultState.hasData) {
               return CustomScrollView(
                 slivers: [
                   SliverAppBar(
@@ -65,13 +66,13 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                       },
                     ),
                     flexibleSpace: Hero(
-                      tag: state.result.restaurant.id,
+                      tag: restaurant.result.restaurant.id,
                       child: Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(
-                              imageUrl + state.result.restaurant.pictureId,
+                              imageUrl + restaurant.result.restaurant.pictureId,
                             ),
                           ),
                         ),
@@ -91,17 +92,18 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    state.result.restaurant.name,
+                                    restaurant.result.restaurant.name,
                                     style: myTextTheme.bodyLarge,
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
-                                    state.result.restaurant.address,
+                                    restaurant.result.restaurant.address,
                                     style: myTextTheme.bodySmall,
                                   ),
                                   const SizedBox(height: 10),
                                   MyRatingBar(
-                                    nilaiRating: state.result.restaurant.rating,
+                                    rating:
+                                        restaurant.result.restaurant.rating,
                                   ),
                                   const SizedBox(height: 10),
                                   Row(
@@ -111,8 +113,8 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                                         child: ListView.builder(
                                           shrinkWrap: true,
                                           scrollDirection: Axis.horizontal,
-                                          itemCount: state.result.restaurant
-                                              .category.length,
+                                          itemCount: restaurant.result
+                                              .restaurant.category.length,
                                           itemBuilder: (_, index) => Container(
                                             margin:
                                                 const EdgeInsets.only(right: 5),
@@ -126,7 +128,7 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                                                   BorderRadius.circular(30),
                                             ),
                                             child: Text(
-                                              state.result.restaurant
+                                              restaurant.result.restaurant
                                                   .category[index].name,
                                               style: const TextStyle(
                                                 fontSize: 10,
@@ -150,7 +152,7 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                                   borderRadius: BorderRadius.circular(30),
                                 ),
                                 child: Text(
-                                  state.result.restaurant.city,
+                                  restaurant.result.restaurant.city,
                                   style: const TextStyle(
                                     color: Colors.white,
                                   ),
@@ -163,7 +165,7 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: ReadMoreText(
-                            text: state.result.restaurant.description,
+                            text: restaurant.result.restaurant.description,
                             maxLength: 120,
                           ),
                         ),
@@ -176,7 +178,7 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                                 context: context,
                                 isScrollControlled: true,
                                 builder: (context) => ReviewRestaurantWidget(
-                                  id: state.result.restaurant.id,
+                                  id: restaurant.result.restaurant.id,
                                 ),
                               );
                             },
@@ -255,11 +257,11 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                                   crossAxisSpacing: 12,
                                   mainAxisSpacing: 12,
                                 ),
-                                itemCount:
-                                    state.result.restaurant.menu.food.length,
+                                itemCount: restaurant
+                                    .result.restaurant.menu.food.length,
                                 itemBuilder: (context, index) {
-                                  Category food =
-                                      state.result.restaurant.menu.food[index];
+                                  Category food = restaurant
+                                      .result.restaurant.menu.food[index];
                                   return Card(
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
@@ -300,11 +302,11 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                                   crossAxisSpacing: 12,
                                   mainAxisSpacing: 12,
                                 ),
-                                itemCount:
-                                    state.result.restaurant.menu.drink.length,
+                                itemCount: restaurant
+                                    .result.restaurant.menu.drink.length,
                                 itemBuilder: (context, index) {
-                                  Category drink =
-                                      state.result.restaurant.menu.drink[index];
+                                  Category drink = restaurant
+                                      .result.restaurant.menu.drink[index];
                                   return Card(
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
@@ -340,10 +342,10 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 15),
                                 shrinkWrap: true,
-                                itemCount: state
+                                itemCount: restaurant
                                     .result.restaurant.customerReview.length,
                                 itemBuilder: (context, index) {
-                                  CustomerReview review = state
+                                  CustomerReview review = restaurant
                                       .result.restaurant.customerReview[index];
                                   return Card(
                                     shape: RoundedRectangleBorder(
@@ -365,13 +367,13 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                   ),
                 ],
               );
-            } else if (state.state == ResultState.noData) {
+            } else if (restaurant.state == ResultState.noData) {
               return const Center(
                 child: Material(
                   child: Text('Tidak ada Data!'),
                 ),
               );
-            } else if (state.state == ResultState.error) {
+            } else if (restaurant.state == ResultState.error) {
               return const Center(
                 child: Text('Tidak ada koneksi Internet!'),
               );

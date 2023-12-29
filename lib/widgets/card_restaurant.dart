@@ -59,7 +59,7 @@ class CardRestaurant extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                MyRatingBar(nilaiRating: restaurant.rating!),
+                MyRatingBar(rating: restaurant.rating!),
                 Text(
                   restaurant.city!,
                   style: myTextTheme.bodySmall,

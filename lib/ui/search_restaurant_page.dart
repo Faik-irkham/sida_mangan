@@ -103,7 +103,7 @@ class _SearchRestaurantPageState extends State<SearchRestaurantPage> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               DetailRestaurant(
-                                            id: restaurant.id,
+                                            id: restaurant.id!,
                                           ),
                                         ),
                                       );
@@ -129,7 +129,7 @@ class _SearchRestaurantPageState extends State<SearchRestaurantPage> {
                                         child: Row(
                                           children: [
                                             Hero(
-                                              tag: restaurant.id,
+                                              tag: restaurant.id!,
                                               child: Container(
                                                 height: 100,
                                                 width: 100,
@@ -147,7 +147,7 @@ class _SearchRestaurantPageState extends State<SearchRestaurantPage> {
                                                     image: NetworkImage(
                                                         imageUrl +
                                                             restaurant
-                                                                .pictureId),
+                                                                .pictureId!),
                                                   ),
                                                 ),
                                               ),
@@ -158,7 +158,7 @@ class _SearchRestaurantPageState extends State<SearchRestaurantPage> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  restaurant.name,
+                                                  restaurant.name!,
                                                   style: const TextStyle(
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w600,
@@ -166,10 +166,10 @@ class _SearchRestaurantPageState extends State<SearchRestaurantPage> {
                                                 ),
                                                 const SizedBox(height: 8),
                                                 MyRatingBar(
-                                                    nilaiRating:
-                                                        restaurant.rating),
+                                                    rating:
+                                                        restaurant.rating!),
                                                 Text(
-                                                  restaurant.city,
+                                                  restaurant.city!,
                                                   style: myTextTheme.bodySmall,
                                                 ),
                                               ],
@@ -192,7 +192,7 @@ class _SearchRestaurantPageState extends State<SearchRestaurantPage> {
                                       .watch<SearchRestaurantsProvider>()
                                       .message),
                                 )
-                              : const SizedBox()
+                              : const SizedBox(),
                 ],
               ),
             ),
