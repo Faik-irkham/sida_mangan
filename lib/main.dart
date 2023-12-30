@@ -3,7 +3,9 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:sida_mangan/common/style.dart';
 import 'package:sida_mangan/data/api/api_service.dart';
+import 'package:sida_mangan/data/db/database_helper.dart';
 import 'package:sida_mangan/provider/app_navigator.dart';
+import 'package:sida_mangan/provider/database_provider.dart';
 import 'package:sida_mangan/provider/restaurants_provider.dart';
 import 'package:sida_mangan/provider/review_restaurant_provider.dart';
 import 'package:sida_mangan/provider/search_restaurant_provider.dart';
@@ -24,6 +26,11 @@ Future<void> main() async {
           create: (context) => RestaurantsProvider(apiService: ApiService()),
         ),
         ChangeNotifierProvider(create: (context) => AppNavigator()),
+        ChangeNotifierProvider(
+          create: (_) => DatabaseProvider(
+            databaseHelper: DatabaseHelper(),
+          ),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -44,6 +51,9 @@ class MyApp extends StatelessWidget {
             backgroundColor: Colors.white,
             foregroundColor: Colors.black,
           ),
+        ),
+        appBarTheme: const AppBarTheme(
+          centerTitle: true,
         ),
       ),
       home: const OnBoardingScreen(),
