@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sida_mangan/data/api/api_service.dart';
 import 'package:sida_mangan/data/model/detail_restaurant_model.dart';
-import 'package:sida_mangan/common/result_state.dart';
+import 'package:sida_mangan/utils/result_state.dart';
 
 class DetailRestaurantsProvider extends ChangeNotifier {
   final ApiService apiService;
