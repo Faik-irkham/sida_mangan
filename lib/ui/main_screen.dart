@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sida_mangan/provider/app_navigator.dart';
+import 'package:sida_mangan/ui/favorite_page.dart';
 import 'package:sida_mangan/ui/home_page.dart';
+import 'package:sida_mangan/ui/setting_page.dart';
 import 'package:sida_mangan/widgets/bottom_navigation.dart'; // Sesuaikan dengan nama file Anda
 
 class MainScreen extends StatelessWidget {
@@ -27,11 +29,11 @@ class MainScreen extends StatelessWidget {
       case 0:
         return const HomePage();
       case 1:
-        return const HomePage();
+        return const FavoritePage();
       case 2:
-        return Container();
+        return const SettingPage();
       default:
-        return Container();
+        return const HomePage();
     }
   }
 }
