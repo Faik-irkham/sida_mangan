@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sida_mangan/ui/main_screen.dart';
 
 class OnBoardingScreen extends StatelessWidget {
-  static const routeName = '/onBoarding_screen';
+  // static const routeName = '/onBoarding_screen';
   const OnBoardingScreen({super.key});
 
   @override
@@ -65,7 +66,12 @@ class OnBoardingScreen extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, '/home_page');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MainScreen(),
+                            ),
+                          );
                         },
                         child: const Text(
                           'Get Started',

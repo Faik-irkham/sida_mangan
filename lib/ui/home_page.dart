@@ -8,7 +8,7 @@ import 'package:sida_mangan/widgets/card_restaurant.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  static const routeName = '/home_page';
+  // static const routeName = '/home_page';
   const HomePage({super.key});
 
   @override

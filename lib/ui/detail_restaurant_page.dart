@@ -13,7 +13,7 @@ import 'package:sida_mangan/widgets/review_restaurant.dart';
 import 'package:sida_mangan/widgets/text_deskripsi.dart';
 
 class DetailRestaurant extends StatefulWidget {
-  static const routeName = '/detail_restaurant';
+  // static const routeName = '/detail_restaurant';
 
   final String id;
 
@@ -28,10 +28,16 @@ class DetailRestaurant extends StatefulWidget {
 
 class _DetailRestaurantState extends State<DetailRestaurant>
     with TickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 3, vsync: this);
+  }
+
   @override
   Widget build(BuildContext context) {
-    TabController tabController = TabController(length: 3, vsync: this);
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: ChangeNotifierProvider<DetailRestaurantsProvider>(
@@ -241,8 +247,7 @@ class _DetailRestaurantState extends State<DetailRestaurant>
                           ),
                         ),
                         SizedBox(
-                          height: 800,
-                          width: double.maxFinite,
+                          height: MediaQuery.of(context).size.height,
                           child: TabBarView(
                             controller: tabController,
                             children: [
