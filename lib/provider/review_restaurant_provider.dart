@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:sida_mangan/data/api/api_service.dart';
 import 'package:sida_mangan/data/model/add_review_model.dart';
-import 'package:sida_mangan/common/result_state.dart';
+import 'package:sida_mangan/utils/result_state.dart';
 
 
 class ReviewProviders extends ChangeNotifier {
