@@ -57,37 +57,18 @@ class CardDetailRestaurant extends StatelessWidget {
                       Navigator.pop(context);
                     },
                   ),
-                  flexibleSpace: Stack(
-                    children: [
-                      Hero(
-                        tag: restaurant.result.restaurant.id,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(
-                                imageUrl +
-                                    restaurant.result.restaurant.pictureId,
-                              ),
-                            ),
+                  flexibleSpace: Hero(
+                    tag: restaurant.result.restaurant.id,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(
+                            imageUrl + restaurant.result.restaurant.pictureId,
                           ),
                         ),
                       ),
-                      Positioned(
-                        top: 16, // Sesuaikan dengan posisi yang diinginkan
-                        right: 16, // Sesuaikan dengan posisi yang diinginkan
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.favorite,
-                            color: Colors
-                                .red, // Sesuaikan dengan warna yang diinginkan
-                          ),
-                          onPressed: () {
-                            // Tambahkan logika favorit di sini
-                          },
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
                 SliverList(
@@ -154,21 +135,43 @@ class CardDetailRestaurant extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              child: Text(
-                                restaurant.result.restaurant.city,
-                                style: const TextStyle(
-                                  color: Colors.white,
+                            Column(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 5,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  child: Text(
+                                    restaurant.result.restaurant.city,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                const SizedBox(height: 10),
+                                Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(width: 1),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Center(
+                                    child: IconButton(
+                                      icon: const Icon(
+                                        Icons.favorite_border_outlined,
+                                        size: 22,
+                                      ),
+                                      onPressed: () {},
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),

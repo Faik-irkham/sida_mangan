@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Restaurant',
+      
       theme: ThemeData(
         textTheme: myTextTheme,
         elevatedButtonTheme: ElevatedButtonThemeData(

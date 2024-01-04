@@ -18,7 +18,7 @@ class _FavoritePageState extends State<FavoritePage> {
       appBar: AppBar(
         title: const Text('Favorite'),
       ),
-      body: const Center(child: Text('Favorites Page')),
+      body: _buildList(),
       // body: _buildList(),
     );
   }
