@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sida_mangan/widgets/card_detail_restaurant.dart';
 
 class DetailRestaurant extends StatefulWidget {
+  static const routeName = '/detail-restaurant';
   final String id;
 
   const DetailRestaurant({
