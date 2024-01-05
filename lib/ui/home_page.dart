@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:sida_mangan/common/style.dart';
-import 'package:sida_mangan/provider/restaurants_provider.dart';
-import 'package:sida_mangan/utils/result_state.dart';
 import 'package:sida_mangan/ui/detail_restaurant_page.dart';
-import 'package:sida_mangan/ui/search_restaurant_page.dart';
-import 'package:sida_mangan/widgets/card_restaurant.dart';
-import 'package:provider/provider.dart';
+import 'package:sida_mangan/ui/favorite_page.dart';
+import 'package:sida_mangan/ui/restaurant_list_page.dart';
+import 'package:sida_mangan/ui/setting_page.dart';
+import 'package:sida_mangan/utils/notification_helper.dart';
 
 class HomePage extends StatefulWidget {
-  // static const routeName = '/home_page';
+  static const routeName = '/home_page';
   const HomePage({super.key});
 
   @override
@@ -16,103 +14,67 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
+  int _bottomNavIndex = 0;
+
+  final NotificationHelper _notificationHelper = NotificationHelper();
+
+  final List<Widget> _listWidget = [
+    const RestaurantListPage(),
+    const FavoritePage(),
+    const SettingPage(),
+  ];
+
+  final List<BottomNavigationBarItem> _bottomNavBarItems = const [
+    BottomNavigationBarItem(
+      icon: Icon(
+        Icons.home,
+      ),
+      label: 'Home',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(
+        Icons.favorite,
+      ),
+      label: 'Favorite',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(
+        Icons.settings_suggest,
+      ),
+      label: 'Setting',
+    ),
+  ];
+
+  void _onBottomNavTapped(int index) {
+    setState(() {
+      _bottomNavIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 40),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Hi! Welcome to',
-                      style: myTextTheme.titleMedium,
-                    ),
-                    Text(
-                      'Restaurant App',
-                      style: myTextTheme.headlineSmall,
-                    ),
-                  ],
-                ),
-                IconButton(
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SearchRestaurantPage(),
-                    ),
-                  ),
-                  icon: const Icon(Icons.search),
-                  iconSize: 24,
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: _buildList(context),
-          ),
-        ],
+      body: _listWidget[_bottomNavIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _bottomNavIndex,
+        selectedItemColor: Colors.black,
+        iconSize: 24,
+        items: _bottomNavBarItems,
+        onTap: _onBottomNavTapped,
       ),
     );
   }
 
-  Widget _buildList(BuildContext context) {
-    return Consumer<RestaurantsProvider>(
-      builder: (context, state, _) {
-        if (state.state == ResultState.loading) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (state.state == ResultState.hasData) {
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: state.result.restaurants.length,
-            itemBuilder: (context, index) {
-              var restaurant = state.result.restaurants[index];
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailRestaurant(
-                        id: restaurant.id!,
-                      ),
-                    ),
-                  );
-                },
-                child: CardRestaurant(restaurant: restaurant),
-              );
-            },
-          );
-        } else if (state.state == ResultState.noData) {
-          return const Center(
-            child: Material(
-              child: Text('Tidak ada Data!'),
-            ),
-          );
-        } else if (state.state == ResultState.error) {
-          return const Center(
-            child: Material(
-              child: Text('Tidak ada koneksi Internet!'),
-            ),
-          );
-        } else {
-          return const Center(
-            child: Material(
-              child: Text(''),
-            ),
-          );
-        }
-      },
-    );
+  @override
+  void initState() {
+    super.initState();
+    _notificationHelper
+        .configureSelectNotificationSubject(DetailRestaurant.routeName);
+  }
+
+  @override
+  void dispose() {
+    selectNotificationSubject.close();
+    super.dispose();
   }
 }
