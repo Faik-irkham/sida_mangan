@@ -5,7 +5,6 @@ import 'package:sida_mangan/data/api/api_service.dart';
 import 'package:sida_mangan/data/model/restaurant_model.dart';
 import 'package:sida_mangan/utils/result_state.dart';
 
-
 class RestaurantsProvider extends ChangeNotifier {
   final ApiService apiService;
 
