@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sida_mangan/provider/database_provider.dart';
 import 'package:sida_mangan/utils/result_state.dart';
-import 'package:sida_mangan/widgets/card_restaurant.dart';
+import 'package:sida_mangan/widgets/card_favorite.dart';
 
 class FavoritePage extends StatefulWidget {
   const FavoritePage({super.key});
@@ -30,7 +30,9 @@ class _FavoritePageState extends State<FavoritePage> {
           return ListView.builder(
             itemCount: provider.favorites.length,
             itemBuilder: (context, index) {
-              return CardRestaurant(restaurant: provider.favorites[index]);
+              return CardFavorite(
+                restaurant: provider.favorites[index],
+              );
             },
           );
         } else {
