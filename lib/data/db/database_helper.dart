@@ -1,4 +1,4 @@
-import 'package:sida_mangan/data/model/restaurant_model.dart';
+import 'package:sida_mangan/data/model/detail_restaurant_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
@@ -22,8 +22,9 @@ class DatabaseHelper {
              id TEXT PRIMARY KEY,
               name TEXT,
               description TEXT,
-              pictureId TEXT,
               city TEXT,
+              pictureId TEXT,
+              address TEXT,
               rating REAL
            )     
         ''');
