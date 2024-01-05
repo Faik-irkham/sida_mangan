@@ -8,6 +8,7 @@ class SettingPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('settings'),
+        leading: Container(),
       ),
       body: _buildList(context),
     );
