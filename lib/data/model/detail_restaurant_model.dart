@@ -76,9 +76,5 @@ class Restaurant {
         "city": city,
         "address": address,
         "rating": rating,
-        "categories": List<dynamic>.from(category.map((x) => x.toJson())),
-        "menus": menu.toJson(),
-        "customerReviews":
-            List<dynamic>.from(customerReview.map((x) => x.toJson())),
       };
 }
