@@ -21,4 +21,9 @@ class Menu {
           ),
         ),
       );
+
+  Map<String, dynamic> toJson() => {
+        "foods": List<dynamic>.from(food.map((x) => x.toJson())),
+        "drinks": List<dynamic>.from(drink.map((x) => x.toJson())),
+      };
 }

@@ -14,4 +14,10 @@ class CustomerReview {
         review: json["review"],
         date: json["date"],
       );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "review": review,
+        "date": date,
+      };
 }
