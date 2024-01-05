@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sida_mangan/provider/scheduling_provider.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -20,9 +22,15 @@ class SettingPage extends StatelessWidget {
         Material(
           child: ListTile(
             title: const Text('Recomendation Restaurants'),
-            trailing: Switch.adaptive(
-              value: true,
-              onChanged: (value) {},
+            trailing: Consumer<SchedulingProvider>(
+              builder: (context, scheduled, _) {
+                return Switch.adaptive(
+                  value: scheduled.isScheduled,
+                  onChanged: (value) {
+                    scheduled.scheduledRecomendations(value);
+                  },
+                );
+              },
             ),
           ),
         ),
