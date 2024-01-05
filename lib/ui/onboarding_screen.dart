@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sida_mangan/ui/main_screen.dart';
+import 'package:sida_mangan/ui/home_page.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   // static const routeName = '/onBoarding_screen';
@@ -69,7 +69,7 @@ class OnBoardingScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const MainScreen(),
+                              builder: (context) => const HomePage(),
                             ),
                           );
                         },
