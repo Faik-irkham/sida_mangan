@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:sida_mangan/utils/result_state.dart';
 import 'package:sida_mangan/data/db/database_helper.dart';
-import 'package:sida_mangan/data/model/restaurant_model.dart';
+import 'package:sida_mangan/data/model/detail_restaurant_model.dart';
+import 'package:sida_mangan/utils/result_state.dart';
 
 class DatabaseProvider extends ChangeNotifier {
   final DatabaseHelper databaseHelper;
@@ -10,7 +10,7 @@ class DatabaseProvider extends ChangeNotifier {
     _getFavorites();
   }
 
-  late ResultState _state;
+  late ResultState _state = ResultState.loading;
   ResultState get state => _state;
 
   String _message = '';
@@ -42,11 +42,11 @@ class DatabaseProvider extends ChangeNotifier {
   }
 
   Future<bool> isFavorited(String id) async {
-    final favoriteRestaurant = await databaseHelper.getFavoriteById(id);
-    return favoriteRestaurant.isNotEmpty;
+    final bookmarkedArticle = await databaseHelper.getFavoriteById(id);
+    return bookmarkedArticle.isNotEmpty;
   }
 
-  void removeFavorite(String id) async {
+  void removeFavorit(String id) async {
     try {
       await databaseHelper.removeFavorite(id);
       _getFavorites();
