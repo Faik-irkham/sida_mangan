@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Restaurant',
-      
+
       theme: ThemeData(
         textTheme: myTextTheme,
         elevatedButtonTheme: ElevatedButtonThemeData(
@@ -55,6 +55,11 @@ class MyApp extends StatelessWidget {
         ),
         appBarTheme: const AppBarTheme(
           centerTitle: true,
+          titleTextStyle: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+            fontSize: 16,
+          ),
         ),
       ),
       home: const OnBoardingScreen(),
