@@ -50,4 +50,13 @@ class ApiService {
       throw Exception('Failed to Review');
     }
   }
+
+  Future<RestaurantsModel> recomendationRestaurants() async {
+    final response = await http.get(Uri.parse(baseUrl));
+    if (response.statusCode == 200) {
+      return RestaurantsModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load top headlines');
+    }
+  }
 }

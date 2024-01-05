@@ -19,7 +19,7 @@ class SettingPage extends StatelessWidget {
       children: [
         Material(
           child: ListTile(
-            title: const Text('Scheduling News'),
+            title: const Text('Recomendation Restaurants'),
             trailing: Switch.adaptive(
               value: true,
               onChanged: (value) {},

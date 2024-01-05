@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:sida_mangan/common/style.dart';
@@ -11,8 +12,11 @@ import 'package:sida_mangan/provider/review_restaurant_provider.dart';
 import 'package:sida_mangan/provider/search_restaurant_provider.dart';
 import 'package:sida_mangan/ui/onboarding_screen.dart';
 
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 Future<void> main() async {
   await initializeDateFormatting('id_ID', null);
+  
   runApp(
     MultiProvider(
       providers: [
@@ -44,7 +48,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Restaurant',
-
       theme: ThemeData(
         textTheme: myTextTheme,
         elevatedButtonTheme: ElevatedButtonThemeData(
@@ -61,13 +64,9 @@ class MyApp extends StatelessWidget {
             fontSize: 16,
           ),
         ),
+        
       ),
       home: const OnBoardingScreen(),
-      // initialRoute: OnBoardingScreen.routeName,
-      // routes: {
-      //   OnBoardingScreen.routeName: (context) => const OnBoardingScreen(),
-      //   HomePage.routeName: (context) => const HomePage(),
-      // },
     );
   }
 }
