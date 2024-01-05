@@ -6,6 +6,7 @@ import 'package:sida_mangan/common/style.dart';
 import 'package:sida_mangan/data/api/api_service.dart';
 import 'package:sida_mangan/data/model/category_restaurant_model.dart';
 import 'package:sida_mangan/data/model/customer_review_model.dart';
+import 'package:sida_mangan/provider/database_provider.dart';
 import 'package:sida_mangan/provider/detail_restaurant_provider.dart';
 import 'package:sida_mangan/ui/detail_restaurant_page.dart';
 import 'package:sida_mangan/utils/result_state.dart';
@@ -154,23 +155,42 @@ class CardDetailRestaurant extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(height: 10),
-                                Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(width: 1),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Center(
-                                    child: IconButton(
-                                      icon: const Icon(
-                                        Icons.favorite_border_outlined,
-                                        size: 22,
-                                      ),
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                ),
+                                Consumer<DatabaseProvider>(
+                                    builder: (context, provider, child) {
+                                  return FutureBuilder<bool>(
+                                    future: provider.isFavorited(restaurant.id),
+                                    builder: (context, snapshot) {
+                                      var isFavorited = snapshot.data ?? false;
+                                      return Container(
+                                        height: 40,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(width: 1),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        child: Center(
+                                          child: isFavorited
+                                              ? IconButton(
+                                                  icon: const Icon(
+                                                    Icons.favorite,
+                                                    size: 22,
+                                                  ),
+                                                  onPressed: () => provider.removeFavorit(restaurant.id),
+                                                )
+                                              : IconButton(
+                                                  icon: const Icon(
+                                                    Icons
+                                                        .favorite_border_outlined,
+                                                    size: 22,
+                                                  ),
+                                                  onPressed: () => provider.addFavorite(restaurant.result.restaurant),
+                                                ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }),
                               ],
                             ),
                           ],
