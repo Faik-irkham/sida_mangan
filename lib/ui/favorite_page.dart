@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sida_mangan/provider/database_provider.dart';
+import 'package:sida_mangan/ui/detail_restaurant_page.dart';
 import 'package:sida_mangan/utils/result_state.dart';
 import 'package:sida_mangan/widgets/card_favorite.dart';
 
@@ -16,7 +17,8 @@ class _FavoritePageState extends State<FavoritePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Favorite'),
+        title: const Text('Favorite Restaurant'),
+        leading: Container(),
       ),
       body: _buildList(),
       // body: _buildList(),
@@ -30,8 +32,20 @@ class _FavoritePageState extends State<FavoritePage> {
           return ListView.builder(
             itemCount: provider.favorites.length,
             itemBuilder: (context, index) {
-              return CardFavorite(
-                restaurant: provider.favorites[index],
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailRestaurant(
+                        id: provider.favorites[index].id,
+                      ),
+                    ),
+                  );
+                },
+                child: CardFavorite(
+                  restaurant: provider.favorites[index],
+                ),
               );
             },
           );
