@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -9,6 +12,7 @@ import 'package:sida_mangan/data/db/database_helper.dart';
 import 'package:sida_mangan/provider/database_provider.dart';
 import 'package:sida_mangan/provider/restaurants_provider.dart';
 import 'package:sida_mangan/provider/review_restaurant_provider.dart';
+import 'package:sida_mangan/provider/scheduling_provider.dart';
 import 'package:sida_mangan/provider/search_restaurant_provider.dart';
 import 'package:sida_mangan/ui/detail_restaurant_page.dart';
 import 'package:sida_mangan/ui/home_page.dart';
@@ -26,30 +30,12 @@ Future<void> main() async {
   final BackgroundService service = BackgroundService();
 
   service.initializeIsolate();
-
+  if (Platform.isAndroid) {
+    await AndroidAlarmManager.initialize();
+  }
   await notificationHelper.initNotfications(flutterLocalNotificationsPlugin);
 
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (context) => RestaurantsProvider(apiService: ApiService()),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => ReviewProviders(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => SearchRestaurantsProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => DatabaseProvider(
-            databaseHelper: DatabaseHelper(),
-          ),
-        ),
-      ],
-      child: const MyApp(),
-    ),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -57,33 +43,54 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Restaurant',
-      navigatorKey: navigatorKey,
-      theme: ThemeData(
-        textTheme: myTextTheme,
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => RestaurantsProvider(apiService: ApiService()),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ReviewProviders(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SearchRestaurantsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => DatabaseProvider(
+            databaseHelper: DatabaseHelper(),
           ),
         ),
-        appBarTheme: const AppBarTheme(
-          centerTitle: true,
-          titleTextStyle: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-            fontSize: 16,
+        ChangeNotifierProvider(
+          create: (_) => SchedulingProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Restaurant',
+        navigatorKey: navigatorKey,
+        theme: ThemeData(
+          textTheme: myTextTheme,
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
+            ),
+          ),
+          appBarTheme: const AppBarTheme(
+            centerTitle: true,
+            titleTextStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+              fontSize: 16,
+            ),
           ),
         ),
+        home: const OnBoardingScreen(),
+        routes: {
+          HomePage.routeName: (context) => const HomePage(),
+          DetailRestaurant.routeName: (context) => DetailRestaurant(
+                id: ModalRoute.of(context)?.settings.arguments as String,
+              )
+        },
       ),
-      home: const OnBoardingScreen(),
-      routes: {
-        HomePage.routeName: (context) => const HomePage(),
-        DetailRestaurant.routeName: (context) => DetailRestaurant(
-              id: ModalRoute.of(context)?.settings.arguments as String,
-            )
-      },
     );
   }
 }
