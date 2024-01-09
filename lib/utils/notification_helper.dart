@@ -36,6 +36,7 @@ class NotificationHelper {
       onDidReceiveNotificationResponse: (details) {
         final payload = details.payload;
         if (payload != null) {
+          // ignore: avoid_print
           print('notification payload: $payload');
         }
         selectNotificationSubject.add(payload ?? 'empty payload');
@@ -46,10 +47,6 @@ class NotificationHelper {
   Future<void> showNotification(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin,
       RestaurantsModel restaurants) async {
-    var random = Random();
-    var randomIndex = random.nextInt(restaurants.restaurants.length);
-    var randomRestaurant = restaurants.restaurants[randomIndex];
-
     var channelId = "1";
     var channelName = "channel_01";
     var channelDescription = "Recomendation Restaurant channel";
@@ -69,9 +66,12 @@ class NotificationHelper {
     );
 
     var titleNotification = "<b>Recomendation Restaurants</b>";
+    // var randomIndex = random.nextInt(restaurants.restaurants.length);
+    var randomRestaurant = Random().nextInt(restaurants.count);
+    var titleRestaurant = restaurants.restaurants[randomRestaurant];
 
     await flutterLocalNotificationsPlugin.show(
-        0, titleNotification, randomRestaurant.name, platformChannelSpecifics,
+        0, titleNotification, titleRestaurant.name, platformChannelSpecifics,
         payload: json.encode(restaurants.toJson()));
   }
 
@@ -79,7 +79,8 @@ class NotificationHelper {
     selectNotificationSubject.stream.listen(
       (String payload) async {
         var data = RestaurantsModel.fromJson(json.decode(payload));
-        var restaurant = data.restaurants[0];
+        var restaurantRandom = Random().nextInt(data.count);
+        var restaurant = data.restaurants[restaurantRandom];
         Navigation.intentWithData(route, restaurant.id!);
       },
     );
