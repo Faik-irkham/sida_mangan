@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:isolate';
 import 'dart:ui';
 
@@ -26,7 +27,7 @@ class BackgroundService {
   }
 
   static Future<void> callback() async {
-    print('Alarm fired!');
+    log('Alarm fired!');
     final NotificationHelper notificationHelper = NotificationHelper();
     var result = await ApiService().listRestaurant();
     await notificationHelper.showNotification(
