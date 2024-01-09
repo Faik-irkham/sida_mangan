@@ -35,10 +35,10 @@ class CardDetailRestaurant extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (restaurant.state == ResultState.hasData) {
             return CustomScrollView(
+              shrinkWrap: true,
               slivers: [
                 SliverAppBar(
                   expandedHeight: 300,
-                  floating: false,
                   pinned: true,
                   leading: IconButton(
                     icon: Ink(
@@ -176,7 +176,9 @@ class CardDetailRestaurant extends StatelessWidget {
                                                     Icons.favorite,
                                                     size: 22,
                                                   ),
-                                                  onPressed: () => provider.removeFavorit(restaurant.id),
+                                                  onPressed: () =>
+                                                      provider.removeFavorit(
+                                                          restaurant.id),
                                                 )
                                               : IconButton(
                                                   icon: const Icon(
@@ -184,7 +186,9 @@ class CardDetailRestaurant extends StatelessWidget {
                                                         .favorite_border_outlined,
                                                     size: 22,
                                                   ),
-                                                  onPressed: () => provider.addFavorite(restaurant.result.restaurant),
+                                                  onPressed: () => provider
+                                                      .addFavorite(restaurant
+                                                          .result.restaurant),
                                                 ),
                                         ),
                                       );
@@ -283,13 +287,15 @@ class CardDetailRestaurant extends StatelessWidget {
                             // Foods GridView
                             GridView.builder(
                               physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 15),
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
-                                crossAxisSpacing: 12,
-                                mainAxisSpacing: 12,
+                                childAspectRatio: 2 / 2.1,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
                               ),
                               itemCount:
                                   restaurant.result.restaurant.menu.food.length,
@@ -310,20 +316,27 @@ class CardDetailRestaurant extends StatelessWidget {
                                         ),
                                         child: Image.asset(
                                           'assets/images/food.jpg',
-                                          height: 85,
+                                          height: 104,
                                           width: double.infinity,
                                           fit: BoxFit.cover,
                                         ),
                                       ),
                                       ListTile(
-                                        title: Text(food.name),
+                                        title: Center(
+                                          child: Text(
+                                            food.name,
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ),
                                       )
                                     ],
                                   ),
                                 );
                               },
                             ),
-                            // // Drinks GridView
+                            // Drinks GridView
                             GridView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               padding:
@@ -332,8 +345,8 @@ class CardDetailRestaurant extends StatelessWidget {
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 childAspectRatio: 2 / 2.1,
-                                crossAxisSpacing: 12,
-                                mainAxisSpacing: 12,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
                               ),
                               itemCount: restaurant
                                   .result.restaurant.menu.drink.length,
@@ -354,13 +367,20 @@ class CardDetailRestaurant extends StatelessWidget {
                                         ),
                                         child: Image.asset(
                                           'assets/images/coffee.jpg',
-                                          height: 85,
+                                          height: 104,
                                           width: double.infinity,
                                           fit: BoxFit.cover,
                                         ),
                                       ),
                                       ListTile(
-                                        title: Text(drink.name),
+                                        title: Center(
+                                          child: Text(
+                                            drink.name,
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ),
                                       )
                                     ],
                                   ),
@@ -381,6 +401,7 @@ class CardDetailRestaurant extends StatelessWidget {
                                 List<CustomerReview> reviews = List.from(
                                   restaurant.result.restaurant.customerReview,
                                 );
+
                                 reviews.sort(
                                   (a, b) => DateFormat('dd MMMM yyyy', 'id_ID')
                                       .parse(b.date)
