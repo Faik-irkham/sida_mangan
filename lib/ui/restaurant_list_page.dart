@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sida_mangan/common/navigation.dart';
 import 'package:sida_mangan/common/style.dart';
 import 'package:sida_mangan/provider/restaurants_provider.dart';
 import 'package:sida_mangan/ui/detail_restaurant_page.dart';
@@ -68,16 +69,10 @@ class RestaurantListPage extends StatelessWidget {
             itemBuilder: (context, index) {
               var restaurant = state.result.restaurants[index];
               return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailRestaurant(
-                        id: restaurant.id!,
-                      ),
-                    ),
-                  );
-                },
+                onTap: () => Navigation.intentWithData(
+                  DetailRestaurant.routeName,
+                  restaurant.id!,
+                ),
                 child: CardRestaurant(restaurant: restaurant),
               );
             },
