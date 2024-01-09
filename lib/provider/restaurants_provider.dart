@@ -9,7 +9,7 @@ class RestaurantsProvider extends ChangeNotifier {
   final ApiService apiService;
 
   RestaurantsProvider({required this.apiService}) {
-    _fetchAllRestaurant();
+    fetchAllRestaurant();
   }
 
   late RestaurantsModel _restaurantsResult;
@@ -22,7 +22,7 @@ class RestaurantsProvider extends ChangeNotifier {
 
   ResultState get state => _state;
 
-  Future<dynamic> _fetchAllRestaurant() async {
+  Future<dynamic> fetchAllRestaurant() async {
     try {
       _state = ResultState.loading;
       notifyListeners();
@@ -49,3 +49,48 @@ class RestaurantsProvider extends ChangeNotifier {
     }
   }
 }
+
+// class RestaurantsProvider extends ChangeNotifier {
+//   final ApiService apiService;
+
+//   RestaurantsProvider({required this.apiService}) {
+//     fetchAllRestaurant();
+//   }
+
+//   late RestaurantsModel _restaurantsResult;
+//   late ResultState _state;
+//   String _message = '';
+
+//   String get message => _message;
+
+//   RestaurantsModel get result => _restaurantsResult;
+
+//   ResultState get state => _state;
+
+//   Future<void> fetchAllRestaurant() async {
+//     try {
+//       _state = ResultState.loading;
+//       notifyListeners();
+
+//       final restaurant = await apiService.listRestaurant();
+
+//       if (restaurant.restaurants.isEmpty) {
+//         _state = ResultState.noData;
+//         _message = 'Empty Data';
+//       } else {
+//         _state = ResultState.hasData;
+//         _restaurantsResult = restaurant;
+//       }
+//     } catch (e) {
+//       if (e is SocketException) {
+//         _state = ResultState.error;
+//         _message = 'Tidak ada koneksi Internet!';
+//       } else {
+//         _state = ResultState.error;
+//         _message = 'Failed to Load Data';
+//       }
+//     } finally {
+//       notifyListeners();
+//     }
+//   }
+// }
