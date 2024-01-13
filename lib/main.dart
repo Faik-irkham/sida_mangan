@@ -12,7 +12,6 @@ import 'package:sida_mangan/data/db/database_helper.dart';
 import 'package:sida_mangan/provider/database_provider.dart';
 import 'package:sida_mangan/provider/restaurants_provider.dart';
 import 'package:sida_mangan/provider/review_restaurant_provider.dart';
-import 'package:sida_mangan/provider/scheduling_provider.dart';
 import 'package:sida_mangan/provider/search_restaurant_provider.dart';
 import 'package:sida_mangan/ui/detail_restaurant_page.dart';
 import 'package:sida_mangan/ui/home_page.dart';
@@ -33,7 +32,7 @@ Future<void> main() async {
   if (Platform.isAndroid) {
     await AndroidAlarmManager.initialize();
   }
-  await notificationHelper.initNotfications(flutterLocalNotificationsPlugin);
+  await notificationHelper.initNotifications(flutterLocalNotificationsPlugin);
 
   runApp(const MyApp());
 }
@@ -58,9 +57,6 @@ class MyApp extends StatelessWidget {
           create: (_) => DatabaseProvider(
             databaseHelper: DatabaseHelper(),
           ),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => SchedulingProvider(),
         ),
       ],
       child: MaterialApp(
