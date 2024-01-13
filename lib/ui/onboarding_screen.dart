@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sida_mangan/ui/home_page.dart';
 
 class OnBoardingScreen extends StatelessWidget {
-  // static const routeName = '/onBoarding_screen';
   const OnBoardingScreen({super.key});
 
   @override
