@@ -35,7 +35,7 @@ class CardDetailRestaurant extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (restaurant.state == ResultState.hasData) {
             return CustomScrollView(
-              shrinkWrap: true,
+              // shrinkWrap: true,
               slivers: [
                 SliverAppBar(
                   expandedHeight: 300,
@@ -280,9 +280,11 @@ class CardDetailRestaurant extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height,
+                        // height: double.maxFinite,
+                        height: MediaQuery.of(context).size.height * 2.1,
                         child: TabBarView(
                           controller: tabController,
+                          // physics: AxisDirection.down,
                           children: [
                             // Foods GridView
                             GridView.builder(
@@ -394,7 +396,7 @@ class CardDetailRestaurant extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 15,
                               ),
-                              shrinkWrap: true,
+                              // shrinkWrap: true,
                               itemCount: restaurant
                                   .result.restaurant.customerReview.length,
                               itemBuilder: (context, index) {
